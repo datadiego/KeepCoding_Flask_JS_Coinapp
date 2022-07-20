@@ -1,2 +1,2 @@
-from crypto_wallet import app
-from crypto_wallet.views import *
+from crypto_app import app
+from crypto_app.views import *
