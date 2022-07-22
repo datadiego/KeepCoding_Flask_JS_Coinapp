@@ -1,9 +1,19 @@
+from flask import jsonify
 from . import app
-from flask import render_template
+from crypto_app.models import DBManager
 
 @app.route("/api/v1/movimientos")
 def movimientos():
-    return "Hola flask"
+    #TODO: devolver json 
+    sql = "SELECT * from movimientos ORDER BY id, date, time, moneda_from, cantidad_from, moneda_to, cantidad_to"
+    try:
+        db = DBManager("db/movimientos.db")
+        data = db.consultaSQL(sql)
+        output = {"status":"success", "data":data}
+        return output
+    except Exception as error:
+        output = {"status":"error", "error":error}
+        return output
 
 @app.route("/api/v1/tipo_cambio/<divisa_from>/<divisa_to>/<cantidad>")
 def tipo_cambio():
