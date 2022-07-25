@@ -25,3 +25,12 @@ class DBManager:
             self.movimientos.append(movimiento)
         conexion.close()
         return self.movimientos
+
+    def crear_movimiento(self, consulta):
+        conexion = sqlite3.connect(self.ruta)
+        cursor = conexion.cursor()
+        cursor.execute(consulta)
+        conexion.commit()
+        resultado = cursor.description
+        conexion.close()
+        return resultado
