@@ -2,10 +2,10 @@ from flask import jsonify
 import requests
 from . import app
 from crypto_app.models import DBManager
-APIKEY = "303AE81D-DCA2-465B-AEE8-44208764006E"
+from crypto_app.settings import APIKEY
+#ENDPOINTS OBLIGATORIOS
 @app.route("/api/v1/movimientos")
 def movimientos():
-    #TODO: devolver json 
     sql = "SELECT * from movimientos ORDER BY id, date, time, moneda_from, cantidad_from, moneda_to, cantidad_to"
     try:
         db = DBManager("db/movimientos.db")
@@ -33,6 +33,8 @@ def alta_movimiento():
 def estado_inversion():
     return "Estado de la inversion"
 
+#ENDPOINTS ADICIONALES
+
 @app.route("/api/v1/monedas_disponibles")
 def valor_monedas():
     headers = {'X-CoinAPI-Key' : APIKEY}
@@ -48,13 +50,15 @@ def valor_monedas():
     output = {"status":"success", "data":assets}
     return output
 
-@app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>")
-def rate(moneda_origen: str, moneda_destino: str):
+@app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>/<float:cantidad>")
+def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
+    #TODO Comprobar si tenemos suficiente saldo para realizar la conversion
     headers = {'X-CoinAPI-Key' : APIKEY}
     url = f"https://rest.coinapi.io/v1/exchangerate/{moneda_origen}/{moneda_destino}"
     respuesta = requests.get(url, headers=headers)
     codigo = respuesta.status_code
     data = respuesta.json()
-    output = {"status":"success", "data":data["rate"]}
+    price = {"tipo_cambio":data["rate"]*cantidad}
+    output = {"status":"success", "data":price}
     return output
 
