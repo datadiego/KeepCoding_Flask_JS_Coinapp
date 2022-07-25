@@ -1,6 +1,8 @@
 from flask import jsonify
+import requests
 from . import app
 from crypto_app.models import DBManager
+from . import APIKEY, monedas
 
 @app.route("/api/v1/movimientos")
 def movimientos():
@@ -9,11 +11,16 @@ def movimientos():
     try:
         db = DBManager("db/movimientos.db")
         data = db.consultaSQL(sql)
-        output = {"status":"success", "data":data}
+        output = {
+            "status":"success", 
+            "datos":data
+                }
+        print(output)
         return output
     except Exception as error:
         output = {"status":"error", "error":error}
-        return output
+        print(error)
+        return error
 
 @app.route("/api/v1/tipo_cambio/<divisa_from>/<divisa_to>/<cantidad>")
 def tipo_cambio():
@@ -27,5 +34,30 @@ def alta_movimiento():
 def estado_inversion():
     return "Estado de la inversion"
 
+@app.route("/api/v1/monedas_disponibles")
+def valor_monedas():
+    headers = {'X-CoinAPI-Key' : APIKEY}
+    url = "https://rest.coinapi.io/v1/assets"
+    respuesta = requests.get(url, headers=headers)
+    codigo = respuesta.status_code
+    data = respuesta.json()
+    index = 0
+    assets = {}
+    for elem in data:
+        assets[index] = elem["asset_id"]
+        index += 1
+    output = {"status":"success", "data":assets}
+    return output
 
+@app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>")
+def rate_moneda(moneda_origen: str, moneda_destino: str):
+    headers = {'X-CoinAPI-Key' : APIKEY}
+    asset_id_base = "BTC"
+    asset_id_quote = "EUR"
+    url = f"https://rest.coinapi.io/v1/exchangerate/{moneda_origen}/{moneda_destino}"
+    respuesta = requests.get(url, headers=headers)
+    codigo = respuesta.status_code
+    data = respuesta.json()
+    output = {"status":"success", "data":data["rate"]}
+    return output
 
