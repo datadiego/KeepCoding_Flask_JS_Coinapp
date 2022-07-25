@@ -2,8 +2,7 @@ from flask import jsonify
 import requests
 from . import app
 from crypto_app.models import DBManager
-from . import APIKEY, monedas
-
+APIKEY = "303AE81D-DCA2-465B-AEE8-44208764006E"
 @app.route("/api/v1/movimientos")
 def movimientos():
     #TODO: devolver json 
@@ -50,10 +49,8 @@ def valor_monedas():
     return output
 
 @app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>")
-def rate_moneda(moneda_origen: str, moneda_destino: str):
+def rate(moneda_origen: str, moneda_destino: str):
     headers = {'X-CoinAPI-Key' : APIKEY}
-    asset_id_base = "BTC"
-    asset_id_quote = "EUR"
     url = f"https://rest.coinapi.io/v1/exchangerate/{moneda_origen}/{moneda_destino}"
     respuesta = requests.get(url, headers=headers)
     codigo = respuesta.status_code
