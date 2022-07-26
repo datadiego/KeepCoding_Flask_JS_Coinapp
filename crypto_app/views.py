@@ -2,7 +2,9 @@ from flask import jsonify
 import requests
 from . import app
 from crypto_app.models import DBManager
-from crypto_app.settings import APIKEY, RUTA_DB
+from crypto_app.settings import APIKEY, MONEDAS, RUTA_DB
+import sqlite3
+from datetime import datetime
 #ENDPOINTS OBLIGATORIOS
 @app.route("/api/v1/movimientos")
 def movimientos():
@@ -16,10 +18,10 @@ def movimientos():
                 }
         print(output)
         return output
-    except Exception as error:
-        output = {"status":"error", "error":error}
-        print(error)
-        return error
+    
+    except sqlite3.OperationalError:
+        output = {"status":"fail", "error":"Hay un problema con la base de datos"}
+        return output
 
 @app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>/<float:cantidad>")
 def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
@@ -35,13 +37,40 @@ def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
 
 @app.route("/api/v1/movimiento")
 def alta_movimiento():
-    date = "2022-01-01"
-    time = "22:12"
+    #TODO Estoy hardcodeando los datos ¿Como introducimos los datos aqui?
+    #TODO Validar cantidades para que no nos la cuelen
+    
+    #Validar fecha
+    date = "2022-12-10"
+    try:
+        
+        datetime.strptime(date, '%Y-%m-%d')
+    except ValueError:
+        output = {"status":"failed", "error":"La fecha introducida no es valida"}
+        return output
+
+    #Validar tiempo
+    time = "23:59"
+    try:
+        datetime.strptime(time, '%H:%M')
+    except ValueError:
+        output = {"status":"failed", "error":"La hora introducida no es valida"}
+        return output
+
+    #Validar moneda origen
     moneda_from = "BTC"
+    if moneda_from not in MONEDAS:
+        output = {"status":"failed", "error":f"La moneda de origen {moneda_from} no existe"}
+        return output
+
     cantidad_from = 5.0
-    moneda_to = "XTZ"
+    moneda_to = "EUR"
+    if moneda_to not in MONEDAS:
+        output = {"status":"failed", "error":f"La moneda de destino {moneda_to} no existe"}
+        return output
     cantidad_to = 1000.0
-    sql = "INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) VALUES ('2022-07-02','21:06', 'XTZ', 0.25, 'LTC', 5)"
+    sql = f"""INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) 
+        VALUES ('{date}','{time}', '{moneda_from}', {cantidad_from}, '{moneda_to}', {cantidad_to})"""
     db = DBManager(RUTA_DB)
     estado = db.crear_movimiento(sql)
     output = {"data":estado}
