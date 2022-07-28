@@ -33,10 +33,14 @@ def alta_movimiento():
     #Validar fecha
     date = "2022-12-10"
     time = "23:59"
-    moneda_from = "BTC"
+    moneda_from = "XTZ"
     cantidad_from = 5.0
     moneda_to = "EUR"
-    cantidad_to = 1000.0
+    cantidad_to = 100.0
+    precio_moneda_to = 50 #TODO Esta variable vendrá de el endpoint rate
+
+    db = DBManager(RUTA_DB)
+    valores_wallet = db.status_cuenta()
 
     try:
         datetime.strptime(date, '%Y-%m-%d')
@@ -63,6 +67,10 @@ def alta_movimiento():
         output = {"status":"failed", "error":f"La moneda de destino {moneda_to} no existe"}
         return output
     
+    if moneda_from != "EUR":
+        if valores_wallet[moneda_from] < precio_moneda_to:
+            output = {"status":"failed", "error":f"No dispones de suficientes {moneda_from}"}
+            return output
     sql = f"""INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) 
         VALUES ('{date}','{time}', '{moneda_from}', {cantidad_from}, '{moneda_to}', {cantidad_to})"""
     db = DBManager(RUTA_DB)
