@@ -8,20 +8,9 @@ from datetime import datetime
 #ENDPOINTS OBLIGATORIOS
 @app.route("/api/v1/movimientos")
 def movimientos():
-    sql = "SELECT * from movimientos ORDER BY id, date, time, moneda_from, cantidad_from, moneda_to, cantidad_to"
-    try:
-        db = DBManager("db/movimientos.db")
-        data = db.consultaSQL(sql)
-        output = {
-            "status":"success", 
-            "datos":data
-                }
-        print(output)
-        return output
-    
-    except sqlite3.OperationalError:
-        output = {"status":"fail", "error":"Hay un problema con la base de datos"}
-        return output
+    db = DBManager(RUTA_DB)
+    output = db.devuelve_movimientos()
+    return output
 
 @app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>/<float:cantidad>")
 def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
@@ -39,18 +28,24 @@ def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
 def alta_movimiento():
     #TODO Estoy hardcodeando los datos ¿Como introducimos los datos aqui?
     #TODO Validar cantidades para que no nos la cuelen
+    #TODO: Crear la peticion sql en el modelo
     
     #Validar fecha
     date = "2022-12-10"
+    time = "23:59"
+    moneda_from = "BTC"
+    cantidad_from = 5.0
+    moneda_to = "EUR"
+    cantidad_to = 1000.0
+
     try:
-        
         datetime.strptime(date, '%Y-%m-%d')
     except ValueError:
         output = {"status":"failed", "error":"La fecha introducida no es valida"}
         return output
 
     #Validar tiempo
-    time = "23:59"
+    
     try:
         datetime.strptime(time, '%H:%M')
     except ValueError:
@@ -58,30 +53,31 @@ def alta_movimiento():
         return output
 
     #Validar moneda origen
-    moneda_from = "BTC"
+    
     if moneda_from not in MONEDAS:
         output = {"status":"failed", "error":f"La moneda de origen {moneda_from} no existe"}
         return output
 
-    cantidad_from = 5.0
-    moneda_to = "EUR"
+    
     if moneda_to not in MONEDAS:
         output = {"status":"failed", "error":f"La moneda de destino {moneda_to} no existe"}
         return output
-    cantidad_to = 1000.0
+    
     sql = f"""INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) 
         VALUES ('{date}','{time}', '{moneda_from}', {cantidad_from}, '{moneda_to}', {cantidad_to})"""
     db = DBManager(RUTA_DB)
     estado = db.crear_movimiento(sql)
-    output = {"data":estado}
+    output = {"status":"success","data":{"date":date, "time":time, "moneda_from":moneda_from, "cantidad_from":cantidad_from, "moneda_to":moneda_to, "cantidad_to":cantidad_to}}
     return output
 
-@app.route("/api/v1/staus")
+@app.route("/api/v1/status")
 def estado_inversion():
-    return "Estado de la inversion"
+    db = DBManager(RUTA_DB)
+    output = db.status_cuenta()
+    return output
+
 
 #ENDPOINTS ADICIONALES
-
 @app.route("/api/v1/monedas_disponibles")
 def valor_monedas():
     headers = {'X-CoinAPI-Key' : APIKEY}
