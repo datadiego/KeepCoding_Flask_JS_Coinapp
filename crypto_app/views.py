@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import render_template
 import requests
 from . import app
 from crypto_app.models import DBManager
@@ -100,6 +100,10 @@ def valor_monedas():
         index += 1
     output = {"status":"success", "data":assets}
     return output
+
+@app.route("/")
+def main():
+    return render_template("index.html")
 
 
 
