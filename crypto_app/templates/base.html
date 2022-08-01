@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block head_title %}Balance App{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/flat-remix.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+
+  {% include 'components/header.html' %}
+  {% include 'components/navbar.html' %}
+
+  <main>
+    {% with mensajes = get_flashed_messages() %}
+      {% if mensajes %}
+      <div class="exito-flash">
+        <p>
+          <ion-icon name="warning-sharp" class="icono-error"></ion-icon>
+        </p>
+      <div class="mensajes-flash">
+          {% for msg in mensajes %}
+              <p>{{ msg }}</p>
+          {% endfor %}
+      </div>
+      </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block contenido %}
+    <h1>{% block page_title %}{% endblock %}</h1>
+    {% endblock %}
+  </main>
+
+  {% include 'components/footer.html' %}
+
+</body>
+
+</html>
