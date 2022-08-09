@@ -12,7 +12,7 @@ def movimientos():
     output = db.devuelve_movimientos()
     return output
 
-@app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>/<float:cantidad>")
+@app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>/<float:cantidad>", methods=['GET'])
 def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
     #TODO Comprobar si tenemos suficiente saldo para realizar la conversion
     headers = {'X-CoinAPI-Key' : APIKEY}
