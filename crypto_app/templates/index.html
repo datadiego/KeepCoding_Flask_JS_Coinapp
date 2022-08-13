@@ -37,28 +37,30 @@
           <!-- Donde vamos a cargar los movimientos leídos desde la API -->
         </tbody>
       </table>
-      <label for="moneda_from">Moneda_from:</label>
-      <select id="moneda_from" name="monedas">
+      <label for="moneda_from" class="form">Moneda_from:</label>
+      <select id="moneda_from" name="monedas" class="form">
         <option value="EUR">EUR</option>
         <option value="USD">USD</option>
         <option value="XTZ">XTZ</option>
         <option value="BTC">BTC</option>
       </select>
 
-      <label for="moneda_to">Moneda_to:</label>
-      <select id="moneda_to" name="monedas">
+      <label for="cantidad" class="form">Cantidad:</label>
+      <input type="text" id="cantidad" name="cantidad" class="form">
+
+      <label for="moneda_to" class="form">Moneda_to:</label>
+      <select id="moneda_to" name="monedas" class="form">
         <option value="EUR">EUR</option>
         <option value="USD">USD</option>
         <option value="XTZ">XTZ</option>
         <option value="BTC">BTC</option>
       </select>
-      <label for="cantidad">Cantidad:</label>
-      <input type="number" id="cantidad" name="cantidad">
+      <label for="conversion" class="form">Conversion:</label>
+      <input type="number" id="conversion" name="conversion" class="form">
+      <button id="boton-convertir">Convertir</button>
 
       
-      <button id="boton-convertir">Convertir</button>
-      <label for="conversion">Conversion:</label>
-      <input type="number" id="conversion" name="conversion">
+
       <button id="boton-comprar">Comprar</button>
       </div>
     </section>

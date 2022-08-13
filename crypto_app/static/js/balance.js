@@ -47,10 +47,37 @@ function obtenerConversion() {
   console.log('entramos en obtener conversion');
   const moneda_from = document.querySelector('#moneda_from').value;
   const moneda_to = document.querySelector('#moneda_to').value;
-  const cantidad = document.querySelector('#cantidad').value;
+  let cantidad = document.querySelector('#cantidad').value;
+  
+  cantidad = parseFloat(cantidad);
+  cantidad = cantidad.toFixed(2);
   console.log("moneda_from: " + moneda_from);
   console.log("moneda_to: " + moneda_to);
-  console.log("cantidad: " + parseFloat(cantidad));
+  console.log("cantidad: " + cantidad);
+
+  peticion_rate.open('GET', `http://127.0.0.1:5000/api/v1/rate/${moneda_from}/${moneda_to}/${cantidad}`, false);
+  peticion_rate.send();
+  if(peticion_rate.status === 404){
+    alert("No se pudo realizar la conversion, revisa los datos o intentalo mas tarde")
+
+  }
+  if (peticion_rate.readyState === 4 && peticion_rate.status === 200) {
+    console.log('--- TODO OK ----');
+    const respuesta = JSON.parse(peticion_rate.responseText);
+    const datos = respuesta.data;
+    console.log(datos);
+    document.getElementById("conversion").value = datos.tipo_cambio.toFixed(2);
+  }
+  
+}
+
+function compraMonedas() {
+  console.log("######################")
+  console.log('entramos en obtener conversion');
+  const moneda_from = document.querySelector('#moneda_from').value;
+  const moneda_to = document.querySelector('#moneda_to').value;
+  const cantidad = document.querySelector('#cantidad').value;
+  
 
   peticion_rate.open('GET', `http://127.0.0.1:5000/api/v1/rate/${moneda_from}/${moneda_to}/${cantidad}`, false);
   peticion_rate.send();
@@ -58,10 +85,12 @@ function obtenerConversion() {
     console.log('--- TODO OK ----');
     const respuesta = JSON.parse(peticion_rate.responseText);
     const datos = respuesta.data;
-    console.log(datos);
-    document.getElementById("conversion").value = datos.tipo_cambio;
+    console.log("moneda_from: " + moneda_from);
+    console.log("moneda_to: " + moneda_to);
+    console.log("cantidad: " + parseFloat(cantidad));
+    console.log("tipo_cambio: " + datos.tipo_cambio);
   }
-  
+
 }
 
 window.onload = function() {
@@ -71,4 +100,7 @@ window.onload = function() {
 
   const boton_conversion = document.querySelector('#boton-convertir'); //funciona mediante el #id de html
   boton_conversion.addEventListener('click', obtenerConversion);
+
+  const boton_compra = document.querySelector('#boton-comprar');
+  boton_compra.addEventListener('click', compraMonedas) 
 };
