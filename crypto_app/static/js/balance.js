@@ -1,5 +1,7 @@
 const peticion_movimientos = new XMLHttpRequest();
 const peticion_rate = new XMLHttpRequest();
+const peticion_compra = new XMLHttpRequest();
+
 function obtenerMovimientos() {
   console.log("####################")
   console.log("Obteniendo movimientos");
@@ -76,7 +78,10 @@ function compraMonedas() {
   console.log('entramos en obtener conversion');
   const moneda_from = document.querySelector('#moneda_from').value;
   const moneda_to = document.querySelector('#moneda_to').value;
-  const cantidad = document.querySelector('#cantidad').value;
+  let cantidad = document.querySelector('#cantidad').value;
+  
+  cantidad = parseFloat(cantidad);
+  cantidad = cantidad.toFixed(2);
   
 
   peticion_rate.open('GET', `http://127.0.0.1:5000/api/v1/rate/${moneda_from}/${moneda_to}/${cantidad}`, false);
