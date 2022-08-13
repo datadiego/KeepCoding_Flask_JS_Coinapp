@@ -4,7 +4,7 @@ from . import app
 from crypto_app.models import DBManager
 from crypto_app.settings import APIKEY, MONEDAS, RUTA_DB
 import sqlite3
-from datetime import datetime
+from datetime import datetime, date, time
 #ENDPOINTS OBLIGATORIOS
 @app.route("/api/v1/movimientos")
 def movimientos():
@@ -31,11 +31,13 @@ def alta_movimiento():
     #TODO: Crear la peticion sql en el modelo
     
     #Validar fecha
-    date = "2022-12-10"
-    time = "23:59"
-    moneda_from = "XTZ"
+    fecha = date.today().isoformat()
+    
+    hora = time(datetime.now().hour, datetime.now().minute, datetime.now().second)
+    hora = f"{hora.hour}:{hora.minute}:{hora.second}"
+    moneda_from = "EUR"
     cantidad_from = 5.0
-    moneda_to = "EUR"
+    moneda_to = "XTZ"
     cantidad_to = 100.0
     precio_moneda_to = 50 #TODO Esta variable vendrá de el endpoint rate
 
@@ -43,7 +45,7 @@ def alta_movimiento():
     valores_wallet = db.status_cuenta()
 
     try:
-        datetime.strptime(date, '%Y-%m-%d')
+        datetime.strptime(fecha, '%Y-%m-%d')
     except ValueError:
         output = {"status":"failed", "error":"La fecha introducida no es valida"}
         return output
@@ -51,7 +53,7 @@ def alta_movimiento():
     #Validar tiempo
     
     try:
-        datetime.strptime(time, '%H:%M')
+        datetime.strptime(hora, '%H:%M:%S')
     except ValueError:
         output = {"status":"failed", "error":"La hora introducida no es valida"}
         return output
@@ -72,10 +74,10 @@ def alta_movimiento():
             output = {"status":"failed", "error":f"No dispones de suficientes {moneda_from}"}
             return output
     sql = f"""INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) 
-        VALUES ('{date}','{time}', '{moneda_from}', {cantidad_from}, '{moneda_to}', {cantidad_to})"""
+        VALUES ('{fecha}','{hora}', '{moneda_from}', {cantidad_from}, '{moneda_to}', {cantidad_to})"""
     db = DBManager(RUTA_DB)
     estado = db.crear_movimiento(sql)
-    output = {"status":"success","data":{"date":date, "time":time, "moneda_from":moneda_from, "cantidad_from":cantidad_from, "moneda_to":moneda_to, "cantidad_to":cantidad_to}}
+    output = {"status":"success","data":{"date":fecha, "time":hora, "moneda_from":moneda_from, "cantidad_from":cantidad_from, "moneda_to":moneda_to, "cantidad_to":cantidad_to}}
     return output
 
 @app.route("/api/v1/status")
