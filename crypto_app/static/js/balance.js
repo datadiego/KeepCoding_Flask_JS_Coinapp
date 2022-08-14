@@ -49,8 +49,7 @@ function obtenerConversion() {
   console.log('entramos en obtener conversion');
   const moneda_from = document.querySelector('#moneda_from').value;
   const moneda_to = document.querySelector('#moneda_to').value;
-  let cantidad = document.querySelector('#cantidad').value;
-  
+  let cantidad = document.querySelector('#cantidad_from').value;
   cantidad = parseFloat(cantidad);
   cantidad = cantidad.toFixed(2);
   console.log("moneda_from: " + moneda_from);
@@ -78,22 +77,23 @@ function compraMonedas() {
   console.log('entramos en obtener conversion');
   const moneda_from = document.querySelector('#moneda_from').value;
   const moneda_to = document.querySelector('#moneda_to').value;
-  let cantidad = document.querySelector('#cantidad').value;
+  let cantidad_from = document.querySelector('#cantidad_from').value;
   
-  cantidad = parseFloat(cantidad);
-  cantidad = cantidad.toFixed(2);
+  cantidad_from = parseFloat(cantidad_from);
+  cantidad_from = cantidad_from.toFixed(2);
   
 
-  peticion_rate.open('GET', `http://127.0.0.1:5000/api/v1/rate/${moneda_from}/${moneda_to}/${cantidad}`, false);
+  peticion_rate.open('GET', `http://127.0.0.1:5000/api/v1/rate/${moneda_from}/${moneda_to}/${cantidad_from}`, false);
   peticion_rate.send();
   if (peticion_rate.readyState === 4 && peticion_rate.status === 200) {
     console.log('--- TODO OK ----');
     const respuesta = JSON.parse(peticion_rate.responseText);
     const datos = respuesta.data;
+    const cantidad_to = datos.tipo_cambio.toFixed(2);
     console.log("moneda_from: " + moneda_from);
+    console.log("cantidad_from: " + cantidad_from);
     console.log("moneda_to: " + moneda_to);
-    console.log("cantidad: " + parseFloat(cantidad));
-    console.log("tipo_cambio: " + datos.tipo_cambio);
+    console.log("cantidad_to: " + cantidad_to);
   }
 
 }
