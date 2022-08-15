@@ -24,7 +24,7 @@ def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
     output = {"status":"success", "data":price}
     return output
 
-@app.route("/api/v1/movimiento")
+@app.route("/api/v1/movimiento", methods=['POST'])
 def alta_movimiento():
     #TODO Estoy hardcodeando los datos ¿Como introducimos los datos aqui?
     #TODO Validar cantidades para que no nos la cuelen
@@ -40,7 +40,7 @@ def alta_movimiento():
     moneda_to = "XTZ"
     cantidad_to = 100.0
     precio_moneda_to = 50 #TODO Esta variable vendrá de el endpoint rate
-
+    print(fecha, hora, moneda_from, cantidad_from, moneda_to, cantidad_to, precio_moneda_to)
     db = DBManager(RUTA_DB)
     valores_wallet = db.status_cuenta()
 
@@ -103,7 +103,7 @@ def valor_monedas():
     output = {"status":"success", "data":assets}
     return output
 
-@app.route("/")
+@app.route("/", methods=["GET","POST"])
 def main():
     return render_template("index.html")
 

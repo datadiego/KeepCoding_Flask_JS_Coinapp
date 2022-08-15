@@ -77,7 +77,7 @@ function compraMonedas() {
   console.log('entramos en obtener conversion');
   const moneda_from = document.querySelector('#moneda_from').value;
   const moneda_to = document.querySelector('#moneda_to').value;
-  let cantidad_from = document.querySelector('#cantidad_from').value;
+  let cantidad_from = parseFloat(document.querySelector('#cantidad_from').value);
   
   cantidad_from = parseFloat(cantidad_from);
   cantidad_from = cantidad_from.toFixed(2);
@@ -95,6 +95,8 @@ function compraMonedas() {
     console.log("moneda_to: " + moneda_to);
     console.log("cantidad_to: " + cantidad_to);
   }
+  peticion_compra.open('POST', 'http://127.0.0.1:5000/api/v1/movimiento', true);
+  peticion_compra.send();
 
 }
 
