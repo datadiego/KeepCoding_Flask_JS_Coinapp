@@ -94,9 +94,14 @@ function compraMonedas() {
     console.log("cantidad_from: " + cantidad_from);
     console.log("moneda_to: " + moneda_to);
     console.log("cantidad_to: " + cantidad_to);
+    //data = {"moneda_from": moneda_from, "cantidad_from": cantidad_from, "moneda_to": moneda_to, "cantidad_to": cantidad_to};
+    peticion_compra.open('POST', 'http://127.0.0.1:5000/api/v1/movimiento', true);
+    peticion_compra.setRequestHeader('Content-Type', 'application/json');
+    data = {"valor":"hola"}
+    peticion_compra.send(data);
+
   }
-  peticion_compra.open('POST', 'http://127.0.0.1:5000/api/v1/movimiento', true);
-  peticion_compra.send();
+
 
 }
 

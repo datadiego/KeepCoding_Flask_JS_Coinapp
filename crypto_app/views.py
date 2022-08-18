@@ -1,10 +1,11 @@
-from flask import render_template
+from flask import render_template, request, json
 import requests
 from . import app
 from crypto_app.models import DBManager
 from crypto_app.settings import APIKEY, MONEDAS, RUTA_DB
 import sqlite3
 from datetime import datetime, date, time
+
 #ENDPOINTS OBLIGATORIOS
 @app.route("/api/v1/movimientos")
 def movimientos():
@@ -24,23 +25,26 @@ def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
     output = {"status":"success", "data":price}
     return output
 
-@app.route("/api/v1/movimiento", methods=['POST'])
+@app.route("/api/v1/movimiento", methods=['GET','POST'])
 def alta_movimiento():
-    #TODO Estoy hardcodeando los datos ¿Como introducimos los datos aqui?
-    #TODO Validar cantidades para que no nos la cuelen
-    #TODO: Crear la peticion sql en el modelo
-    
-    #Validar fecha
+
+    print(":D")
+    print(request.method)
+    if request.method == 'POST':
+        data = request.form['data']
+        respuesta = request.close()
+        data_aux = json.loads(data)[0]
+        print(data_aux)
     fecha = date.today().isoformat()
     
     hora = time(datetime.now().hour, datetime.now().minute, datetime.now().second)
     hora = f"{hora.hour}:{hora.minute}:{hora.second}"
-    moneda_from = "EUR"
-    cantidad_from = 5.0
-    moneda_to = "XTZ"
-    cantidad_to = 100.0
+    moneda_from = "AAA"
+    cantidad_from = 0.0
+    moneda_to = "BBB"
+    cantidad_to = 0.0
     precio_moneda_to = 50 #TODO Esta variable vendrá de el endpoint rate
-    print(fecha, hora, moneda_from, cantidad_from, moneda_to, cantidad_to, precio_moneda_to)
+    #print(fecha, hora, moneda_from, cantidad_from, moneda_to, cantidad_to, precio_moneda_to)
     db = DBManager(RUTA_DB)
     valores_wallet = db.status_cuenta()
 
