@@ -1,12 +1,15 @@
 header {
-  background-color: #b8174c;
+  background-color: #780088;
   color: white;
   height: 50px;
   font-size: large;
   line-height: 50px;
   padding-left: 25px;
 }
+body{
+  background-color: #1d1d1d;
 
+}
 nav {
   background-color: #19a187;
   color: white;
@@ -20,23 +23,25 @@ nav.main-menu a {
 }
 
 main {
-  max-width: 600px;
+  max-width: 800px;
   margin: auto;
   padding: 0 20px;
 }
 
 table.paper {
   width: 100%;
+
 }
 
 .titulo-tabla {
-  border-bottom: #19a187 1px solid;
+  border-bottom: #ffc400 1px solid;
   text-align: left;
+  width: 10%;
 }
 
 .numero,
 .acciones {
-  text-align: right;
+  text-align: left;
 }
 
 .mini-boton {
@@ -55,7 +60,7 @@ table.paper .error {
 .pie-de-pagina {
   margin-top: 40px;
   padding: 20px;
-  border-top: solid 1px #b8174c;
+  border-top: solid 1px #780088;
 }
 
 .lista-vacia {
@@ -79,10 +84,12 @@ table.paper .error {
   display: inline-block;
   margin-right: 2rem;
   margin-bottom: .5rem;
+  
 }
 
 .campo-formulario input:not([type="radio"]) {
   width: 100%;
+  
 }
 
 .lista-errores {
@@ -157,3 +164,11 @@ table.paper .error {
   }
 }
 
+.paper, select{
+  background-color: #282828;
+  color: white;
+}
+
+label.form{
+  margin-left:100px;
+}

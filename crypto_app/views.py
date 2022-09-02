@@ -25,25 +25,24 @@ def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
     output = {"status":"success", "data":price}
     return output
 
-@app.route("/api/v1/movimiento", methods=['GET','POST'])
+@app.route("/api/v1/movimiento", methods=['POST'])
 def alta_movimiento():
-
-    print(":D")
-    print(request.method)
+    data = ""
     if request.method == 'POST':
-        data = request.form['data']
-        respuesta = request.close()
-        data_aux = json.loads(data)[0]
-        print(data_aux)
+        data = request.get_json()
+        for elem in data:
+            print(elem,"=",data[elem])
+        request.close()
+        
     fecha = date.today().isoformat()
     
     hora = time(datetime.now().hour, datetime.now().minute, datetime.now().second)
     hora = f"{hora.hour}:{hora.minute}:{hora.second}"
-    moneda_from = "AAA"
-    cantidad_from = 0.0
-    moneda_to = "BBB"
-    cantidad_to = 0.0
-    precio_moneda_to = 50 #TODO Esta variable vendrá de el endpoint rate
+    moneda_from = data["moneda_from"]
+    cantidad_from = data["cantidad_from"]
+    moneda_to = data["moneda_to"]
+    cantidad_to = data["cantidad_to"]
+    precio_moneda_to = 999999999999 #TODO Esta variable vendrá de el endpoint rate, es decir es o tipo_cambio, o el precio de una UNIDAD de esa moneda
     #print(fecha, hora, moneda_from, cantidad_from, moneda_to, cantidad_to, precio_moneda_to)
     db = DBManager(RUTA_DB)
     valores_wallet = db.status_cuenta()

@@ -90,19 +90,13 @@ function compraMonedas() {
     const respuesta = JSON.parse(peticion_rate.responseText);
     const datos = respuesta.data;
     const cantidad_to = datos.tipo_cambio.toFixed(2);
-    console.log("moneda_from: " + moneda_from);
-    console.log("cantidad_from: " + cantidad_from);
-    console.log("moneda_to: " + moneda_to);
-    console.log("cantidad_to: " + cantidad_to);
-    //data = {"moneda_from": moneda_from, "cantidad_from": cantidad_from, "moneda_to": moneda_to, "cantidad_to": cantidad_to};
+    output_aux = {"moneda_from": moneda_from, "cantidad_from": cantidad_from, "moneda_to": moneda_to, "cantidad_to": cantidad_to};
+    output = {"data": output_aux};
     peticion_compra.open('POST', 'http://127.0.0.1:5000/api/v1/movimiento', true);
-    peticion_compra.setRequestHeader('Content-Type', 'application/json');
-    data = {"valor":"hola"}
-    peticion_compra.send(data);
-
+    peticion_compra.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+    //console.log(data);
+    peticion_compra.send(JSON.stringify(output_aux));
   }
-
-
 }
 
 window.onload = function() {
