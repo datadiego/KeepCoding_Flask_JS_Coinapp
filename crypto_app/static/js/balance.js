@@ -13,7 +13,7 @@ function obtenerMovimientos() {
 function mostrarMovimientos() {
   console.log('entramos en mostrar movimientos');
   const tabla = document.querySelector('#cuerpo-tabla');
-
+  let html = '';
   if (this.readyState === 4 && this.status === 200) {
     console.log('--- TODO OK ----');
     const respuesta = JSON.parse(peticion_movimientos.responseText);
@@ -24,7 +24,6 @@ function mostrarMovimientos() {
     }
     
     if(movimientos.length > 0){
-    let html = '';
     for (let i = 0; i < movimientos.length; i = i + 1) {
       const mov = movimientos[i];
       html = html + `
@@ -38,9 +37,9 @@ function mostrarMovimientos() {
         </tr>
       `;
     }
-    tabla.innerHTML = html;
-  }
     
+  }
+  tabla.innerHTML = html; 
   } 
   else {
     console.error('---- Algo ha ido mal en la petición ----');
