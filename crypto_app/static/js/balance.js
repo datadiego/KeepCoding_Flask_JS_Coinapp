@@ -19,7 +19,11 @@ function mostrarMovimientos() {
     const respuesta = JSON.parse(peticion_movimientos.responseText);
     const movimientos = respuesta.data;
     
-
+    if (movimientos.length === 0) {
+      tabla.innerHTML = '<tr><td colspan="5">No hay movimientos</td></tr>';
+    }
+    
+    if(movimientos.length > 0){
     let html = '';
     for (let i = 0; i < movimientos.length; i = i + 1) {
       const mov = movimientos[i];
@@ -34,9 +38,11 @@ function mostrarMovimientos() {
         </tr>
       `;
     }
-
     tabla.innerHTML = html;
-  } else {
+  }
+    
+  } 
+  else {
     console.error('---- Algo ha ido mal en la petición ----');
     alert('Error al cargar los movimientos');
   }
@@ -96,6 +102,7 @@ function compraMonedas() {
     peticion_compra.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
     //console.log(data);
     peticion_compra.send(JSON.stringify(output_aux));
+    peticion_compra.onload = location.reload()
   }
 }
 

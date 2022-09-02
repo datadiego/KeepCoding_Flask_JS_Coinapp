@@ -1,5 +1,5 @@
 header {
-  background-color: #780088;
+  background-color: #101010;
   color: white;
   height: 50px;
   font-size: large;
@@ -169,6 +169,11 @@ table.paper .error {
   color: white;
 }
 
-label.form{
+label.form, button{
   margin-left:100px;
+}
+button{
+  display:inline-block;
+  background-color: #1d1d1d;
+  border-color: #666666;
 }

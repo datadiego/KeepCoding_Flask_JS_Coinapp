@@ -6,7 +6,16 @@ from crypto_app.settings import APIKEY, MONEDAS, RUTA_DB
 import sqlite3
 from datetime import datetime, date, time
 
+#Los endpoints del proyecto son:
+#/api/v1/movimientos DEVUELVE JSON CON TODOS LOS MOVIMIENTOS EN LA DDBB
+#/api/v1/tipo_cambio/<moneda_from>/<moneda_to>/<cantidad>
+
 #ENDPOINTS OBLIGATORIOS
+
+@app.route("/", methods=["GET","POST"])
+def main():
+    return render_template("index.html")
+
 @app.route("/api/v1/movimientos")
 def movimientos():
     db = DBManager(RUTA_DB)
@@ -30,23 +39,20 @@ def alta_movimiento():
     data = ""
     if request.method == 'POST':
         data = request.get_json()
-        for elem in data:
-            print(elem,"=",data[elem])
         request.close()
-        
+    # Preparamos los datos del movimiento
     fecha = date.today().isoformat()
-    
     hora = time(datetime.now().hour, datetime.now().minute, datetime.now().second)
     hora = f"{hora.hour}:{hora.minute}:{hora.second}"
     moneda_from = data["moneda_from"]
     cantidad_from = data["cantidad_from"]
     moneda_to = data["moneda_to"]
     cantidad_to = data["cantidad_to"]
-    precio_moneda_to = 999999999999 #TODO Esta variable vendrá de el endpoint rate, es decir es o tipo_cambio, o el precio de una UNIDAD de esa moneda
-    #print(fecha, hora, moneda_from, cantidad_from, moneda_to, cantidad_to, precio_moneda_to)
+
+    #Recogemos los datos actuales de la BBDD
     db = DBManager(RUTA_DB)
     valores_wallet = db.status_cuenta()
-
+    valores_wallet = valores_wallet["data"]
     try:
         datetime.strptime(fecha, '%Y-%m-%d')
     except ValueError:
@@ -73,9 +79,14 @@ def alta_movimiento():
         return output
     
     if moneda_from != "EUR":
-        if valores_wallet[moneda_from] < precio_moneda_to:
-            output = {"status":"failed", "error":f"No dispones de suficientes {moneda_from}"}
+        print("La moneda de origen no es EUR")
+        print("Tengo ",valores_wallet[moneda_from],moneda_from)
+        print("Necesito ",cantidad_from,moneda_from)
+        if float(cantidad_from) > valores_wallet[moneda_from]:
+            output = {"status":"failed", "error":f"No tienes suficiente saldo en {moneda_from}"}
             return output
+        
+        
     sql = f"""INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) 
         VALUES ('{fecha}','{hora}', '{moneda_from}', {cantidad_from}, '{moneda_to}', {cantidad_to})"""
     db = DBManager(RUTA_DB)
@@ -88,7 +99,6 @@ def estado_inversion():
     db = DBManager(RUTA_DB)
     output = db.status_cuenta()
     return output
-
 
 #ENDPOINTS ADICIONALES
 @app.route("/api/v1/monedas_disponibles")
@@ -106,9 +116,7 @@ def valor_monedas():
     output = {"status":"success", "data":assets}
     return output
 
-@app.route("/", methods=["GET","POST"])
-def main():
-    return render_template("index.html")
+
 
 
 
