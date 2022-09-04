@@ -46,12 +46,14 @@ function mostrarEstadoCuenta(){
     }
     else{
     for (let i = 0; i < monedas.length; i = i + 1) {
-      html += `
+      if (valores[i] != 0) {
+        html = html + `
         <tr>
-          <td>${monedas[i]}</td>
-          <td>${valores[i]}</td>
+        <td>${monedas[i]}</td>
+        <td>${valores[i]}</td>
         </tr>
       `;
+      }
     }
   }
     tabla_estado.innerHTML = html;

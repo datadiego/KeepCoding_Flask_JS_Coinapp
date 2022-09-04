@@ -89,6 +89,7 @@ class DBManager:
         for elem in data["data"]:
             valores_monedas[elem["moneda_from"]] -= elem["cantidad_from"]
             valores_monedas[elem["moneda_to"]] += elem["cantidad_to"]
+            
 
         output = {"status":"success", "data":valores_monedas}
         return output
