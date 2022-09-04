@@ -41,6 +41,10 @@ function mostrarEstadoCuenta(){
     let estado_cuenta = respuesta.data;
     const monedas = Object.keys(estado_cuenta);
     const valores = Object.values(estado_cuenta);
+    if (monedas.length === 0) {
+      html = '<tr><td>No hay movimientos para mostrar</td></tr>';
+    }
+    else{
     for (let i = 0; i < monedas.length; i = i + 1) {
       html += `
         <tr>
@@ -49,8 +53,10 @@ function mostrarEstadoCuenta(){
         </tr>
       `;
     }
+  }
     tabla_estado.innerHTML = html;
   }
+
 }
 function mostrarMovimientos() {
   const tabla = document.querySelector('#cuerpo-tabla');
