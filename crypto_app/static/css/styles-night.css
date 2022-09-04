@@ -178,8 +178,11 @@ button{
   background-color: #1d1d1d;
   border-color: #666666;
 }
-
-#tema{
+input:not([type=submit]):not([type=reset]):not([type=radio]):not([type=checkbox]),
+textarea, select {
+background:#101010;
+}
+select#selector-tema{
   float: right;
   margin-right: 20px;
 }

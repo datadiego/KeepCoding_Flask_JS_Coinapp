@@ -136,7 +136,15 @@ function compraMonedas() {
     peticion_compra.onload = location.reload()
   }
 }
-
+function cambiarTema() {
+  const tema = document.querySelector('#tema');
+  const selector_tema = document.querySelector('#selector-tema');
+  if (selector_tema.value === "dark") {
+    tema.setAttribute('href', '/static/css/styles-night.css');
+  } else {
+    tema.setAttribute('href', '/static/css/styles-light.css');
+  }
+}
 
 window.onload = function() {
   obtenerMovimientos();
@@ -154,4 +162,6 @@ window.onload = function() {
   const boton_compra = document.querySelector('#boton-comprar');
   boton_compra.addEventListener('click', compraMonedas)
 
+  const selector_tema = document.querySelector('#selector-tema');
+  selector_tema.addEventListener('change', cambiarTema);
 };

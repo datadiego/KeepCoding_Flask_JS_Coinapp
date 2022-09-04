@@ -1,12 +1,15 @@
 header {
-  background-color: #560062;
+  background-color: #101010;
   color: white;
   height: 50px;
   font-size: large;
   line-height: 50px;
   padding-left: 25px;
 }
+body{
+  background-color: #d3d3d3;
 
+}
 nav {
   background-color: #19a187;
   color: white;
@@ -20,23 +23,25 @@ nav.main-menu a {
 }
 
 main {
-  max-width: 600px;
+  max-width: 800px;
   margin: auto;
   padding: 0 20px;
 }
 
 table.paper {
   width: 100%;
+
 }
 
 .titulo-tabla {
-  border-bottom: #19a187 1px solid;
+  border-bottom: #000000 1px solid;
   text-align: left;
+  width: 8%;
 }
 
 .numero,
 .acciones {
-  text-align: right;
+  text-align: left;
 }
 
 .mini-boton {
@@ -55,7 +60,8 @@ table.paper .error {
 .pie-de-pagina {
   margin-top: 40px;
   padding: 20px;
-  border-top: solid 1px #b8174c;
+  color:rgb(0, 0, 0);
+  border-top: solid 1px #000000;
 }
 
 .lista-vacia {
@@ -79,10 +85,12 @@ table.paper .error {
   display: inline-block;
   margin-right: 2rem;
   margin-bottom: .5rem;
+  
 }
 
 .campo-formulario input:not([type="radio"]) {
   width: 100%;
+  
 }
 
 .lista-errores {
@@ -157,3 +165,24 @@ table.paper .error {
   }
 }
 
+.paper, select{
+  background-color: #c5c5c5;
+  color: #000000;
+}
+
+label.form, button{
+  margin-left:100px;
+}
+button{
+  display:inline-block;
+  background-color: #5a5a5a;
+  border-color: #1b1b1b;
+}
+input:not([type=submit]):not([type=reset]):not([type=radio]):not([type=checkbox]),
+textarea, select {
+background:#c1c1c1;
+}
+select#selector-tema{
+  float: right;
+  margin-right: 20px;
+}
