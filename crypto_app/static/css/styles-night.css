@@ -36,7 +36,7 @@ table.paper {
 .titulo-tabla {
   border-bottom: #ffc400 1px solid;
   text-align: left;
-  width: 10%;
+  width: 8%;
 }
 
 .numero,
@@ -60,6 +60,7 @@ table.paper .error {
 .pie-de-pagina {
   margin-top: 40px;
   padding: 20px;
+  color:#FFF;
   border-top: solid 1px #780088;
 }
 
@@ -176,4 +177,9 @@ button{
   display:inline-block;
   background-color: #1d1d1d;
   border-color: #666666;
+}
+
+#tema{
+  float: right;
+  margin-right: 20px;
 }

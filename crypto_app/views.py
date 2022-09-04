@@ -6,15 +6,19 @@ from crypto_app.settings import APIKEY, MONEDAS, RUTA_DB
 import sqlite3
 from datetime import datetime, date, time
 
-#Los endpoints del proyecto son:
-#/api/v1/movimientos DEVUELVE JSON CON TODOS LOS MOVIMIENTOS EN LA DDBB
-#/api/v1/tipo_cambio/<moneda_from>/<moneda_to>/<cantidad>
-
-#ENDPOINTS OBLIGATORIOS
-
 @app.route("/", methods=["GET","POST"])
 def main():
     return render_template("index.html")
+
+@app.route("/api/v1/status")
+def estado_inversion():
+    db = DBManager(RUTA_DB)
+    output = db.status_cuenta()
+    return output
+
+@app.route("/api/v1/monedas_disponibles_usuario")
+def monedas_disponibles_usuario():
+    return json.dumps(MONEDAS)
 
 @app.route("/api/v1/movimientos")
 def movimientos():
@@ -94,13 +98,9 @@ def alta_movimiento():
     output = {"status":"success","data":{"date":fecha, "time":hora, "moneda_from":moneda_from, "cantidad_from":cantidad_from, "moneda_to":moneda_to, "cantidad_to":cantidad_to}}
     return output
 
-@app.route("/api/v1/status")
-def estado_inversion():
-    db = DBManager(RUTA_DB)
-    output = db.status_cuenta()
-    return output
 
-#ENDPOINTS ADICIONALES
+
+
 @app.route("/api/v1/monedas_disponibles")
 def valor_monedas():
     headers = {'X-CoinAPI-Key' : APIKEY}

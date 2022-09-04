@@ -1,12 +1,57 @@
 const peticion_movimientos = new XMLHttpRequest();
 const peticion_rate = new XMLHttpRequest();
 const peticion_compra = new XMLHttpRequest();
-
+const peticion_status = new XMLHttpRequest();
+const peticion_monedas = new XMLHttpRequest();
+let tema_dark = true;
 function obtenerMovimientos() {
   peticion_movimientos.open('GET', 'http://127.0.0.1:5000/api/v1/movimientos', true);
   peticion_movimientos.send();
 }
-
+function obtenerEstadoCuenta() {
+  peticion_status.open('GET', 'http://127.0.0.1:5000/api/v1/status', true);
+  peticion_status.send();
+}
+function obtenerMonedasDisponibles(){
+  peticion_monedas.open('GET', 'http://127.0.0.1:5000/api/v1/monedas_disponibles_usuario', true);
+  peticion_monedas.send();
+}
+function mostrarMonedasDisponibles(){
+  const select_from = document.querySelector('#moneda_from');
+  const select_to = document.querySelector('#moneda_to');
+  if (this.readyState === 4 && this.status === 200) {
+    const respuesta = JSON.parse(this.responseText);
+    const monedas = respuesta;
+    console.log(monedas)
+    let html = '';
+    for (let i = 0; i < monedas.length; i = i + 1) {
+      html += `<option value="${monedas[i]}">${monedas[i]}</option>`;
+    }
+    select_from.innerHTML = html;
+    select_to.innerHTML = html;
+  }
+}
+function mostrarEstadoCuenta(){
+  const tabla_estado = document.querySelector('#cuerpo-tabla-estado');
+  let html = '';
+  
+  if (this.readyState === 4 && this.status === 200) {
+    const respuesta = JSON.parse(this.responseText);
+    console.log(respuesta)
+    let estado_cuenta = respuesta.data;
+    const monedas = Object.keys(estado_cuenta);
+    const valores = Object.values(estado_cuenta);
+    for (let i = 0; i < monedas.length; i = i + 1) {
+      html += `
+        <tr>
+          <td>${monedas[i]}</td>
+          <td>${valores[i]}</td>
+        </tr>
+      `;
+    }
+    tabla_estado.innerHTML = html;
+  }
+}
 function mostrarMovimientos() {
   const tabla = document.querySelector('#cuerpo-tabla');
   const mensajes = document.querySelector("#mensajes-control")
@@ -84,13 +129,21 @@ function compraMonedas() {
   }
 }
 
+
 window.onload = function() {
   obtenerMovimientos();
   peticion_movimientos.onload = mostrarMovimientos; //request de html
-
+  
+  obtenerEstadoCuenta();
+  peticion_status.onload = mostrarEstadoCuenta;
+  
+  obtenerMonedasDisponibles();
+  peticion_monedas.onload = mostrarMonedasDisponibles;
+  
   const boton_conversion = document.querySelector('#boton-convertir'); //funciona mediante el #id de html
   boton_conversion.addEventListener('click', obtenerConversion);
 
   const boton_compra = document.querySelector('#boton-comprar');
-  boton_compra.addEventListener('click', compraMonedas) 
+  boton_compra.addEventListener('click', compraMonedas)
+
 };

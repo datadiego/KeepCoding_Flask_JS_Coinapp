@@ -8,6 +8,7 @@
   <title>Balance App</title>
   <link rel="stylesheet" href="/static/css/flat-remix.css">
   <link rel="stylesheet" href="/static/css/styles-night.css">
+  <link rel="stylesheet" href="" id="theme">
   <script type="module"
     src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -18,12 +19,15 @@
 
   {% include 'components/header.html' %}
 
+  <select id="tema">
+    <option value="dark">dark</option>
+    <option value="light">light</option>
+  </select>
+
   <main>
     <section class="seccion-movimientos">
-      <div class = "paper">
-        
+      <div class = "paper">      
       <table>
-        
         <thead>
           <tr>
             <th class="titulo-tabla">Fecha</th>
@@ -42,10 +46,7 @@
       <!--Empieza la interfaz de usuario-->
       <label for="moneda_from" class="form">Moneda_from:</label>
       <select id="moneda_from" name="monedas" class="form">
-        <option value="EUR">EUR</option>
-        <option value="USD">USD</option>
-        <option value="XTZ">XTZ</option>
-        <option value="BTC">BTC</option>
+
       </select>
 
       <label for="cantidad_from" class="form">Cantidad:</label>
@@ -53,16 +54,30 @@
 
       <label for="moneda_to" class="form" id="form">Moneda_to:</label>
       <select id="moneda_to" name="monedas" class="form">
-        <option value="EUR">EUR</option>
-        <option value="USD">USD</option>
-        <option value="XTZ">XTZ</option>
-        <option value="BTC">BTC</option>
+
       </select>
 
       <label for="conversion" class="form">Conversion:</label>
       <input type="number" id="conversion" name="conversion" class="form">
       <button id="boton-convertir">Convertir</button>
       <button id="boton-comprar">Comprar</button>
+      </div>
+    </section>
+
+    <section class="seccion-status">
+      <div class="paper" id="estado_cuenta">
+        <table>
+          <thead>
+            <tr>
+              <th class="titulo-tabla">Moneda</th>
+              <th class="titulo-tabla">Cantidad</th>
+            </tr>
+          </thead>
+
+          <tbody id="cuerpo-tabla-estado">
+            <!-- Donde vamos a cargar los movimientos leídos desde la API -->
+          </tbody>
+        </table>
       </div>
     </section>
   </main>
