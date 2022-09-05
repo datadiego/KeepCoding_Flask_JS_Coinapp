@@ -110,7 +110,13 @@ function obtenerConversion() {
   if (peticion_rate.readyState === 4 && peticion_rate.status === 200) {
     const respuesta = JSON.parse(peticion_rate.responseText);
     const datos = respuesta.data;
+    const estado_peticion = respuesta.status;
+    if (estado_peticion === "fail"){
+      document.getElementById("mensajes-error").innerHTML = respuesta.error
+    }
+    if (estado_peticion === "success"){
     document.getElementById("conversion").value = datos.tipo_cambio.toFixed(2);
+    }
   }
 }
 

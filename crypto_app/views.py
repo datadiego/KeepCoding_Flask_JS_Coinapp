@@ -34,8 +34,11 @@ def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
     respuesta = requests.get(url, headers=headers)
     codigo = respuesta.status_code
     data = respuesta.json()
-    price = {"tipo_cambio":data["rate"]*cantidad}
-    output = {"status":"success", "data":price}
+    try:
+        price = {"tipo_cambio":data["rate"]*cantidad}
+        output = {"status":"success", "data":price}
+    except KeyError:
+        output = {"status":"fail", "error":"ERROR: No se ha podido realizar la conversión, comprueba tu APIKEY y vuelve a intentarlo, si acabas de crear tu APIKEY puede dar algunos errores, intenta de nuevo en unos minutos"}
     return output
 
 @app.route("/api/v1/movimiento", methods=['POST'])
@@ -53,7 +56,6 @@ def alta_movimiento():
     moneda_to = data["moneda_to"]
     cantidad_to = data["cantidad_to"]
 
-    #Recogemos los datos actuales de la BBDD
     db = DBManager(RUTA_DB)
     valores_wallet = db.status_cuenta()
     valores_wallet = valores_wallet["data"]
@@ -62,22 +64,17 @@ def alta_movimiento():
     except ValueError:
         output = {"status":"failed", "error":"La fecha introducida no es valida"}
         return output
-
-    #Validar tiempo
-    
+ 
     try:
         datetime.strptime(hora, '%H:%M:%S')
     except ValueError:
         output = {"status":"failed", "error":"La hora introducida no es valida"}
         return output
-
-    #Validar moneda origen
     
     if moneda_from not in MONEDAS:
         output = {"status":"failed", "error":f"La moneda de origen {moneda_from} no existe"}
         return output
 
-    
     if moneda_to not in MONEDAS:
         output = {"status":"failed", "error":f"La moneda de destino {moneda_to} no existe"}
         return output
@@ -89,8 +86,7 @@ def alta_movimiento():
         if float(cantidad_from) > valores_wallet[moneda_from]:
             output = {"status":"failed", "error":f"No tienes suficiente saldo en {moneda_from}"}
             return output
-        
-        
+            
     sql = f"""INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) 
         VALUES ('{fecha}','{hora}', '{moneda_from}', {cantidad_from}, '{moneda_to}', {cantidad_to})"""
     db = DBManager(RUTA_DB)

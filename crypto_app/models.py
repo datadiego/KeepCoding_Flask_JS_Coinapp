@@ -89,7 +89,11 @@ class DBManager:
         for elem in data["data"]:
             valores_monedas[elem["moneda_from"]] -= elem["cantidad_from"]
             valores_monedas[elem["moneda_to"]] += elem["cantidad_to"]
+        #TODO: si el valor de las monedas es cero, se quedan fuera del diccionario
             
-
+        #if value is 0, delete key
+        for key in list(valores_monedas):
+            if valores_monedas[key] < 0.0:
+                del valores_monedas[key]
         output = {"status":"success", "data":valores_monedas}
         return output

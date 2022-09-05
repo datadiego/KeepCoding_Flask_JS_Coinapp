@@ -186,3 +186,8 @@ select#selector-tema{
   float: right;
   margin-right: 20px;
 }
+#mensajes-error{
+  color: #990000;
+  font-size: small;
+  padding-left: 40px;
+}
