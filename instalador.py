@@ -55,7 +55,7 @@ cursor = conexion.cursor()
 try:
     cursor.execute('CREATE TABLE "movimientos" ("id" INTEGER NOT NULL UNIQUE, "date" TEXT NOT NULL, "time" TEXT NOT NULL, "moneda_from" TEXT NOT NULL, "cantidad_from" REAL NOT NULL, "moneda_to" NUMERIC NOT NULL, "cantidad_to" REAL NOT NULL, PRIMARY KEY("id" AUTOINCREMENT))')
 except sqlite3.OperationalError:
-    print("La base de datos ya existe, borrala para crearla de nuevo")
+    print("La base de datos ya existe, bórrala para crearla de nuevo")
 conexion.commit()
 conexion.close()
 print("Base de datos creada")

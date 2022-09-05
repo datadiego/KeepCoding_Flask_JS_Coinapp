@@ -38,14 +38,16 @@
             <th class="titulo-tabla acciones">Cantidad_to</th>
           </tr>
         </thead>
+        
         <tbody id="cuerpo-tabla">
           <!-- Donde vamos a cargar los movimientos leídos desde la API -->
         </tbody>
       </table>
+      <p id="error-movimientos"></p> 
       <!--Empieza la interfaz de usuario-->
       <label for="moneda_from" class="form">Moneda_from:</label>
       <select id="moneda_from" name="monedas" class="form">
-
+        <!-- Cargamos las monedas disponibles desde js -->
       </select>
 
       <label for="cantidad_from" class="form">Cantidad:</label>
@@ -53,7 +55,7 @@
 
       <label for="moneda_to" class="form" id="form">Moneda_to:</label>
       <select id="moneda_to" name="monedas" class="form">
-
+        <!-- Cargamos las monedas disponibles desde js -->
       </select>
 
       <label for="conversion" class="form">Conversion:</label>

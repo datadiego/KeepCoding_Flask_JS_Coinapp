@@ -62,11 +62,12 @@ function mostrarEstadoCuenta(){
 }
 function mostrarMovimientos() {
   const tabla = document.querySelector('#cuerpo-tabla');
-  const mensajes = document.querySelector("#mensajes-control")
+  const mensajes = document.querySelector("#error-movimientos")
   let html = '';
   if (this.readyState === 4 && this.status === 200) {
     const respuesta = JSON.parse(peticion_movimientos.responseText);
     const movimientos = respuesta.data;
+    console.log(movimientos.length)
     if (movimientos.length === 0) {
       mensajes.innerHTML = 'No hay movimientos para mostrar';
     }
