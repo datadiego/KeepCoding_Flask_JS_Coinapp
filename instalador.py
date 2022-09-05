@@ -14,7 +14,7 @@ def configuracion_APIKEY():
         test_APIKEY = peticion("¿Quieres testear tu APIKEY? (y/n) ")
         test_APIKEY = test_APIKEY.lower()
         if test_APIKEY == "y":
-            print("Llamando a coinapi.io...")
+            print("Llamando a coinapi.io... Esto puede tardar unos segundos.")
             headers = {'X-CoinAPI-Key' : APIKEY_AUX}
             url = "https://rest.coinapi.io/v1/assets"
             respuesta = requests.get(url, headers=headers)
@@ -52,7 +52,16 @@ print("Creando base de datos...")
 import sqlite3
 conexion = sqlite3.connect("db/movimientos.db")
 cursor = conexion.cursor()
-cursor.execute('CREATE TABLE "movimientos" ("id" INTEGER NOT NULL UNIQUE, "date" TEXT NOT NULL, "time" TEXT NOT NULL, "moneda_from" TEXT NOT NULL, "cantidad_from" REAL NOT NULL, "moneda_to" NUMERIC NOT NULL, "cantidad_to" REAL NOT NULL, PRIMARY KEY("id" AUTOINCREMENT))')
+try:
+    cursor.execute('CREATE TABLE "movimientos" ("id" INTEGER NOT NULL UNIQUE, "date" TEXT NOT NULL, "time" TEXT NOT NULL, "moneda_from" TEXT NOT NULL, "cantidad_from" REAL NOT NULL, "moneda_to" NUMERIC NOT NULL, "cantidad_to" REAL NOT NULL, PRIMARY KEY("id" AUTOINCREMENT))')
+except sqlite3.OperationalError:
+    print("La base de datos ya existe, borrala para crearla de nuevo")
 conexion.commit()
 conexion.close()
 print("Base de datos creada")
+
+file_name = "./.env"
+with open(file_name, "w") as file:
+    file.write("FLASK_APP=app.py\n")
+    file.write("FLASK_ENV=development\n")
+print("Archivo .env creado")
