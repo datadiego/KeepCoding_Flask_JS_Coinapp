@@ -22,7 +22,6 @@ function mostrarMonedasDisponibles(){
   if (this.readyState === 4 && this.status === 200) {
     const respuesta = JSON.parse(this.responseText);
     const monedas = respuesta;
-    console.log(monedas)
     let html = '';
     for (let i = 0; i < monedas.length; i = i + 1) {
       html += `<option value="${monedas[i]}">${monedas[i]}</option>`;
@@ -37,7 +36,6 @@ function mostrarEstadoCuenta(){
   
   if (this.readyState === 4 && this.status === 200) {
     const respuesta = JSON.parse(this.responseText);
-    console.log(respuesta)
     let estado_cuenta = respuesta.data;
     const monedas = Object.keys(estado_cuenta);
     const valores = Object.values(estado_cuenta);
@@ -67,7 +65,6 @@ function mostrarMovimientos() {
   if (this.readyState === 4 && this.status === 200) {
     const respuesta = JSON.parse(peticion_movimientos.responseText);
     const movimientos = respuesta.data;
-    console.log(movimientos.length)
     if (movimientos.length === 0) {
       mensajes.innerHTML = 'No hay movimientos para mostrar';
     }
@@ -139,8 +136,9 @@ function compraMonedas() {
     output = {"data": output_aux};
     peticion_compra.open('POST', 'http://127.0.0.1:5000/api/v1/movimiento', true);
     peticion_compra.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
-    peticion_compra.send(JSON.stringify(output_aux));
-    peticion_compra.onload = location.reload()
+    resultado = peticion_compra.send(JSON.stringify(output_aux));
+    peticion_compra.onload = obtenerMovimientos;
+    peticion_movimientos.onload = mostrarMovimientos;
   }
 }
 function cambiarTema() {
