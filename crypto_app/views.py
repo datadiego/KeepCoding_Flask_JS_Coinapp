@@ -31,10 +31,16 @@ def movimientos():
 def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
     val_moneda_origen = valida_moneda(moneda_origen)
     val_moneda_destino = valida_moneda(moneda_destino)
-    if val_moneda_origen == False or val_moneda_destino == False:
+    if val_moneda_origen == False:
         output = {
             "status":"fail",
-            "error":"Moneda no disponible"
+            "error":"La moneda de origen no es válida"
+        }
+        return output, status.HTTP_400_BAD_REQUEST
+    if val_moneda_destino == False:
+        output = {
+            "status":"fail",
+            "error":"La moneda de destino no es válida"
         }
         return output, status.HTTP_400_BAD_REQUEST
     headers = {'X-CoinAPI-Key' : APIKEY}
@@ -47,7 +53,7 @@ def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
         output = {"status":"success", "data":price}
     except KeyError:
         output = {"status":"fail", "error":"ERROR: No se ha podido realizar la conversión, comprueba tu APIKEY y vuelve a intentarlo, si acabas de crear tu APIKEY puede dar algunos errores, intenta de nuevo en unos minutos"}
-    return output
+    return output, status.HTTP_400_BAD_REQUEST
 
 @app.route("/api/v1/movimiento", methods=['POST'])
 def alta_movimiento():
