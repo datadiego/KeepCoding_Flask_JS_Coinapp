@@ -1,5 +1,5 @@
 import sqlite3
-
+from crypto_app.settings import MONEDAS
 # from crypto_app.views import valor_monedas
 
 class DBManager:
@@ -97,3 +97,15 @@ class DBManager:
                 del valores_monedas[key]
         output = {"status":"success", "data":valores_monedas}
         return output
+
+def valida_moneda(moneda):
+    """
+    Este método comprueba si la moneda introducida es válida
+
+    Parámetros:
+    moneda: string con la moneda a comprobar
+    """
+    if moneda in MONEDAS:
+        return True
+    else:
+        return False

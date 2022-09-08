@@ -79,8 +79,12 @@
             <!-- Donde vamos a cargar los movimientos leídos desde la API -->
           </tbody>
         </table>
+        {% if error %}
+          <p>HUBO UN ERROR</p>
+        {% endif %}
+      
       </div>
-      <p id="mensajes-error"></p>
+      
     </section>
   </main>
   

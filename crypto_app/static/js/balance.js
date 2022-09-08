@@ -3,7 +3,7 @@ const peticion_rate = new XMLHttpRequest();
 const peticion_compra = new XMLHttpRequest();
 const peticion_status = new XMLHttpRequest();
 const peticion_monedas = new XMLHttpRequest();
-let tema_dark = true;
+let tema_dark = true; 
 function obtenerMovimientos() {
   peticion_movimientos.open('GET', 'http://127.0.0.1:5000/api/v1/movimientos', true);
   peticion_movimientos.send();
@@ -136,9 +136,13 @@ function compraMonedas() {
     output = {"data": output_aux};
     peticion_compra.open('POST', 'http://127.0.0.1:5000/api/v1/movimiento', true);
     peticion_compra.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
-    resultado = peticion_compra.send(JSON.stringify(output_aux));
-    peticion_compra.onload = obtenerMovimientos;
-    peticion_movimientos.onload = mostrarMovimientos;
+    peticion_compra.send(JSON.stringify(output_aux));
+    //peticion_compra.onload = obtenerMovimientos
+    //peticion_movimientos.onload = mostrarMovimientos
+    if (peticion_compra.status === "400"){
+      alert("No se pudo realizar la compra, revisa los datos o intentalo mas tarde")
+    
+    }
   }
 }
 function cambiarTema() {
@@ -160,6 +164,9 @@ window.onload = function() {
   
   obtenerMonedasDisponibles();
   peticion_monedas.onload = mostrarMonedasDisponibles;
+  
+  peticion_compra.onload = obtenerMovimientos;
+  peticion_movimientos.onload = mostrarMovimientos;
   
   const boton_conversion = document.querySelector('#boton-convertir'); //funciona mediante el #id de html
   boton_conversion.addEventListener('click', obtenerConversion);
