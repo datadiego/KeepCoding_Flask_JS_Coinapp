@@ -29,20 +29,20 @@ def movimientos():
 
 @app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>/<float:cantidad>", methods=['GET'])
 def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
-    val_moneda_origen = valida_moneda(moneda_origen)
-    val_moneda_destino = valida_moneda(moneda_destino)
-    if val_moneda_origen == False:
+    
+    if valida_moneda(moneda_origen) == False:
         output = {
             "status":"fail",
-            "error":"La moneda de origen no es válida"
+            "error":"Las monedas seleccionadas no son válidas"
         }
         return output, status.HTTP_400_BAD_REQUEST
-    if val_moneda_destino == False:
+    if valida_moneda(moneda_destino) == False:
         output = {
             "status":"fail",
-            "error":"La moneda de destino no es válida"
+            "error":"Las monedas seleccionadas no son válidas"
         }
         return output, status.HTTP_400_BAD_REQUEST
+    
     headers = {'X-CoinAPI-Key' : APIKEY}
     url = f"https://rest.coinapi.io/v1/exchangerate/{moneda_origen}/{moneda_destino}"
     respuesta = requests.get(url, headers=headers)
@@ -53,7 +53,8 @@ def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
         output = {"status":"success", "data":price}
     except KeyError:
         output = {"status":"fail", "error":"ERROR: No se ha podido realizar la conversión, comprueba tu APIKEY y vuelve a intentarlo, si acabas de crear tu APIKEY puede dar algunos errores, intenta de nuevo en unos minutos"}
-    return output, status.HTTP_400_BAD_REQUEST
+        return output, status.HTTP_400_BAD_REQUEST
+    return output
 
 @app.route("/api/v1/movimiento", methods=['POST'])
 def alta_movimiento():
@@ -67,7 +68,7 @@ def alta_movimiento():
         datetime.strptime(fecha, '%Y-%m-%d')
     except ValueError:
         output = {"status":"failed", "error":"La fecha introducida no es valida"}
-        return output
+        return output, status.HTTP_400_BAD_REQUEST
     
     hora = time(datetime.now().hour, datetime.now().minute, datetime.now().second)
     hora = f"{hora.hour}:{hora.minute}:{hora.second}"
@@ -76,11 +77,11 @@ def alta_movimiento():
     except ValueError:
         output = {"status":"failed", "error":"La hora introducida no es valida"}
         print("La hora introducida no es valida")
-        return output
+        return output, status.HTTP_400_BAD_REQUEST
     except TypeError:
         output = {"status":"failed", "error":"La hora introducida no es valida"}
         print("La hora introducida no es valida")
-        return output
+        return output, status.HTTP_400_BAD_REQUEST
         
     
     moneda_from = data["moneda_from"]
@@ -92,20 +93,22 @@ def alta_movimiento():
     moneda_to = data["moneda_to"]
     if moneda_to not in MONEDAS:
         output = {"status":"failed", "error":f"La moneda de destino {moneda_to} no existe"}
-        return output
+        return output, status.HTTP_400_BAD_REQUEST
 
     cantidad_to = data["cantidad_to"]
     cantidad_from = data["cantidad_from"]
     db = DBManager(RUTA_DB)
     valores_wallet = db.status_cuenta()
     valores_wallet = valores_wallet["data"]
+
     if moneda_from != "EUR":
         print("La moneda de origen no es EUR")
         print("Tengo ",valores_wallet[moneda_from],moneda_from)
         print("Necesito ",cantidad_from,moneda_from)
         if float(cantidad_from) > valores_wallet[moneda_from]:
             output = {"status":"failed", "error":f"No tienes suficiente saldo en {moneda_from}"}
-            return output
+            return output, status.HTTP_400_BAD_REQUEST
+    #TODO: Falta otra validacion al mandar el request de sql
     sql = f"""INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) 
         VALUES ('{fecha}','{hora}', '{moneda_from}', {cantidad_from}, '{moneda_to}', {cantidad_to})"""
     db = DBManager(RUTA_DB)

@@ -105,7 +105,7 @@ def valida_moneda(moneda):
     Parámetros:
     moneda: string con la moneda a comprobar
     """
-    if moneda in MONEDAS:
-        return True
-    else:
+    if moneda not in MONEDAS:
         return False
+    else:
+        return True
