@@ -87,9 +87,6 @@ function mostrarMovimientos() {
   }
   tabla.innerHTML = html; 
   } 
-  else {
-    alert('Error al cargar los movimientos');
-  }
 }
 
 function obtenerConversion() {
@@ -139,10 +136,20 @@ function compraMonedas() {
     peticion_compra.send(JSON.stringify(output_aux));
     //peticion_compra.onload = obtenerMovimientos
     //peticion_movimientos.onload = mostrarMovimientos
-    if (peticion_compra.status === "400"){
-      alert("No se pudo realizar la compra, revisa los datos o intentalo mas tarde")
-    
-    }
+    peticion_compra.onload = compruebaCompra
+  }
+}
+function compruebaCompra(){
+  console.log("La compra fue tal que asi socio: "+this.status)
+  if (this.status === 200){
+    console.log("La compra fue exitosa")
+    obtenerMovimientos()
+    mostrarMovimientos()
+    return true
+  }
+  if (this.status === 400){
+    alert("No se pudo realizar la compra")
+    return false
   }
 }
 function cambiarTema() {

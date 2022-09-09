@@ -29,7 +29,6 @@ def movimientos():
 
 @app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>/<float:cantidad>", methods=['GET'])
 def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
-    
     if valida_moneda(moneda_origen) == False:
         output = {
             "status":"fail",
@@ -85,6 +84,7 @@ def alta_movimiento():
         
     
     moneda_from = data["moneda_from"]
+    moneda_from = "AAA"
     if moneda_from not in MONEDAS:
         output = {"status":"failed", "error":f"La moneda de origen {moneda_from} no existe"}
         print("Error en moneda_from")
@@ -114,7 +114,7 @@ def alta_movimiento():
     db = DBManager(RUTA_DB)
     estado = db.crear_movimiento(sql)
     output = {"status":"success","data":{"date":fecha, "time":hora, "moneda_from":moneda_from, "cantidad_from":cantidad_from, "moneda_to":moneda_to, "cantidad_to":cantidad_to}}
-    return output
+    return output, status.HTTP_200_OK
 
 
 
