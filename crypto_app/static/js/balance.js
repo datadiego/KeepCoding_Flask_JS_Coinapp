@@ -81,9 +81,9 @@ function mostrarMovimientos() {
         <td>${mov.date}</td>
         <td>${mov.time}</td>
         <td>${mov.moneda_from}</td>
-        <td>${mov.cantidad_from}</td>
+        <td id="cantidad_tabla">${Number(mov.cantidad_from).toFixed(2)}</td>
         <td>${mov.moneda_to}</td>
-        <td>${mov.cantidad_to}</td>
+        <td id="cantidad_tabla">${Number(mov.cantidad_to).toFixed(2)}</td>
         </tr>
       `;
     }
