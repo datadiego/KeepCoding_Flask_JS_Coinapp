@@ -14,18 +14,20 @@ def main():
 @app.route("/api/v1/status")
 def estado_inversion():
     db = DBManager(RUTA_DB)
+    db.comprueba_db()
     output = db.status_cuenta()
-    return output
+    return output, status.HTTP_200_OK
 
 @app.route("/api/v1/monedas_disponibles_usuario")
 def monedas_disponibles_usuario():
-    return json.dumps(MONEDAS)
+    return json.dumps(MONEDAS), status.HTTP_200_OK
 
 @app.route("/api/v1/movimientos")
 def movimientos():
     db = DBManager(RUTA_DB)
+    db.comprueba_db()
     output = db.devuelve_movimientos()
-    return output
+    return output, status.HTTP_200_OK
 
 @app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>/<float:cantidad>", methods=['GET'])
 def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
@@ -53,7 +55,7 @@ def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
     except KeyError:
         output = {"status":"fail", "error":"ERROR: No se ha podido realizar la conversión, comprueba tu APIKEY y vuelve a intentarlo, si acabas de crear tu APIKEY puede dar algunos errores, intenta de nuevo en unos minutos"}
         return output, status.HTTP_400_BAD_REQUEST
-    return output
+    return output, status.HTTP_200_OK
 
 @app.route("/api/v1/movimiento", methods=['POST'])
 def alta_movimiento():
@@ -84,7 +86,6 @@ def alta_movimiento():
         
     
     moneda_from = data["moneda_from"]
-    moneda_from = "AAA"
     if moneda_from not in MONEDAS:
         output = {"status":"failed", "error":f"La moneda de origen {moneda_from} no existe"}
         print("Error en moneda_from")
@@ -97,7 +98,9 @@ def alta_movimiento():
 
     cantidad_to = data["cantidad_to"]
     cantidad_from = data["cantidad_from"]
+
     db = DBManager(RUTA_DB)
+    db.comprueba_db()
     valores_wallet = db.status_cuenta()
     valores_wallet = valores_wallet["data"]
 
@@ -108,16 +111,21 @@ def alta_movimiento():
         if float(cantidad_from) > valores_wallet[moneda_from]:
             output = {"status":"failed", "error":f"No tienes suficiente saldo en {moneda_from}"}
             return output, status.HTTP_400_BAD_REQUEST
-    #TODO: Falta otra validacion al mandar el request de sql
-    sql = f"""INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) 
-        VALUES ('{fecha}','{hora}', '{moneda_from}', {cantidad_from}, '{moneda_to}', {cantidad_to})"""
+    
+
+    sql = "INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) VALUES (?,?,?,?,?,?)" 
+    params = (
+        fecha,
+        hora,
+        moneda_from,
+        cantidad_from,
+        moneda_to,
+        cantidad_to
+    )
     db = DBManager(RUTA_DB)
-    estado = db.crear_movimiento(sql)
+    estado = db.consultaConParametros(sql, params)
     output = {"status":"success","data":{"date":fecha, "time":hora, "moneda_from":moneda_from, "cantidad_from":cantidad_from, "moneda_to":moneda_to, "cantidad_to":cantidad_to}}
     return output, status.HTTP_200_OK
-
-
-
 
 @app.route("/api/v1/monedas_disponibles")
 def valor_monedas():
@@ -128,11 +136,18 @@ def valor_monedas():
     data = respuesta.json()
     index = 0
     assets = {}
-    for elem in data:
-        assets[index] = elem["asset_id"]
-        index += 1
-    output = {"status":"success", "data":assets}
-    return output
+    try:
+        for elem in data:
+            assets[index] = elem["asset_id"]
+            index += 1
+        output = {"status":"success", "data":assets}
+    except KeyError:
+        output = {"status":"fail", "error":"ERROR: No se ha podido realizar la consulta, comprueba tu APIKEY y vuelve a intentarlo, si acabas de crear tu APIKEY puede dar algunos errores, intenta de nuevo en unos minutos"}
+        return output, status.HTTP_400_BAD_REQUEST
+    except TypeError:
+        output = {"status":"fail", "error":"ERROR: No se ha podido realizar la consulta, comprueba tu APIKEY y vuelve a intentarlo, si acabas de crear tu APIKEY puede dar algunos errores, intenta de nuevo en unos minutos"}
+        return output, status.HTTP_400_BAD_REQUEST
+    return output, status.HTTP_200_OK
 
 
 

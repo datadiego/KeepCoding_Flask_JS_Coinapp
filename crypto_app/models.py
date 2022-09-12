@@ -1,11 +1,25 @@
 import sqlite3
-from crypto_app.settings import MONEDAS
+from crypto_app.settings import MONEDAS, RUTA_DB
 # from crypto_app.views import valor_monedas
 
 class DBManager:
     def __init__(self, ruta):
         self.ruta = ruta
-    
+
+    def consultaConParametros(self, consulta, params):
+        conexion = sqlite3.connect(self.ruta)
+        cursor = conexion.cursor()
+        resultado = False
+        try:
+            cursor.execute(consulta, params)
+            conexion.commit()
+            resultado = True
+        except Exception as error:
+            print("ERROR DB:", error)
+            conexion.rollback()
+        conexion.close()
+        return resultado
+            
     def consultaSQL(self, consulta):
         """
         Método genérico de consulta a la base de datos
@@ -97,6 +111,18 @@ class DBManager:
                 del valores_monedas[key]
         output = {"status":"success", "data":valores_monedas}
         return output
+    def comprueba_db(self):
+        try:
+            file = open(RUTA_DB)
+            file.close()
+        except FileNotFoundError:
+            conexion = sqlite3.connect(RUTA_DB)
+            cursor = conexion.cursor()
+            cursor.execute('CREATE TABLE "movimientos" ("id" INTEGER NOT NULL UNIQUE, "date" TEXT NOT NULL, "time" TEXT NOT NULL, "moneda_from" TEXT NOT NULL, "cantidad_from" REAL NOT NULL, "moneda_to" NUMERIC NOT NULL, "cantidad_to" REAL NOT NULL, PRIMARY KEY("id" AUTOINCREMENT))')
+            conexion.commit()
+            conexion.close()
+        
+
 
 def valida_moneda(moneda):
     """

@@ -43,7 +43,7 @@
           <!-- Donde vamos a cargar los movimientos leídos desde la API -->
         </tbody>
       </table>
-      <p id="error-movimientos"></p> 
+      <p id="error-movimientos"></p>  
       <!--Empieza la interfaz de usuario-->
       <label for="moneda_from" class="form">Moneda_from:</label>
       <select id="moneda_from" name="monedas" class="form">
@@ -79,10 +79,8 @@
             <!-- Donde vamos a cargar los movimientos leídos desde la API -->
           </tbody>
         </table>
-        {% if error %}
-          <p>HUBO UN ERROR</p>
-        {% endif %}
-      
+        <p id="error-estado"></p>
+        <p id="mensajes-error"></p>
       </div>
       
     </section>

@@ -32,6 +32,7 @@ function mostrarMonedasDisponibles(){
 }
 function mostrarEstadoCuenta(){
   const tabla_estado = document.querySelector('#cuerpo-tabla-estado');
+  const mensaje = document.querySelector("#error-estado")
   let html = '';
   
   if (this.readyState === 4 && this.status === 200) {
@@ -40,9 +41,10 @@ function mostrarEstadoCuenta(){
     const monedas = Object.keys(estado_cuenta);
     const valores = Object.values(estado_cuenta);
     if (monedas.length === 0) {
-      html = '<tr><td>No hay movimientos para mostrar</td></tr>';
+      mensaje.innerHTML = 'No hay movimientos para mostrar';
     }
     else{
+      mensaje.innerHTML = '';
     for (let i = 0; i < monedas.length; i = i + 1) {
       if (valores[i] != 0) {
         html = html + `
@@ -65,11 +67,13 @@ function mostrarMovimientos() {
   if (this.readyState === 4 && this.status === 200) {
     const respuesta = JSON.parse(peticion_movimientos.responseText);
     const movimientos = respuesta.data;
+    console.log(movimientos.length)
     if (movimientos.length === 0) {
       mensajes.innerHTML = 'No hay movimientos para mostrar';
     }
     
     if(movimientos.length >= 1){
+    mensajes.innerHTML = '';
     for (let i = 0; i < movimientos.length; i = i + 1) {
       const mov = movimientos[i];
       html = html + `
@@ -145,11 +149,11 @@ function compruebaCompra(){
     console.log("La compra fue exitosa")
     obtenerMovimientos()
     mostrarMovimientos()
-    return true
+    obtenerEstadoCuenta()
+    mostrarEstadoCuenta()
   }
   if (this.status === 400){
-    alert("No se pudo realizar la compra")
-    return false
+    document.getElementById("mensajes-error").innerHTML = "ERROR:\n"+this.responseText
   }
 }
 function cambiarTema() {
