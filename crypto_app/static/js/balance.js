@@ -50,7 +50,7 @@ function mostrarEstadoCuenta(){
         html = html + `
         <tr>
         <td>${monedas[i]}</td>
-        <td>${valores[i]}</td>
+        <td>${Number(valores[i]).toFixed(2)}</td>
         </tr>
       `;
       }
