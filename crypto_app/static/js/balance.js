@@ -60,6 +60,22 @@ function mostrarEstadoCuenta(){
   }
 
 }
+// function formatNumber(floatValue = 0, decimals = 0, multiplier = 1) {
+//   let floatMultiplied = floatValue * multiplier;
+//   let stringFloat = floatMultiplied + "";
+//   let arraySplitFloat = stringFloat.split(".");
+//   let decimalsValue = "0";
+//   if (arraySplitFloat.length > 1) {
+//       decimalsValue = arraySplitFloat[1].slice(0, decimals);
+//   }
+//   let integerValue = arraySplitFloat[0];
+//   let arrayFullStringValue = [integerValue, decimalsValue];
+//   let FullStringValue = arrayFullStringValue.join(".")
+//   let floatFullValue = parseFloat(FullStringValue) + "";
+//   let formatFloatFullValue = new Intl.NumberFormat('es-ES', { minimumFractionDigits: decimals }).format(floatFullValue);
+//   return formatFloatFullValue;
+
+// }
 function mostrarMovimientos() {
   const tabla = document.querySelector('#cuerpo-tabla');
   const mensajes = document.querySelector("#error-movimientos")
@@ -76,14 +92,22 @@ function mostrarMovimientos() {
     mensajes.innerHTML = '';
     for (let i = 0; i < movimientos.length; i = i + 1) {
       const mov = movimientos[i];
+      const cantidad_to_dec = Number(mov.cantidad_to).toFixed(2);
+
+      const cantidad_from_dec = Number(mov.cantidad_from).toFixed(2);
+      const cantidad_from = formatNumber(cantidad_from_dec);
+      //TODO: cambiar cantidad_to
+      //TODO: formatear fecha a dd/Mes/yyyy
+      const aux = formatDate(mov.date);
+      console.log(aux)
       html = html + `
         <tr>
-        <td>${mov.date}</td>
+        <td>${aux}</td>
         <td>${mov.time}</td>
         <td>${mov.moneda_from}</td>
-        <td id="cantidad_tabla">${Number(mov.cantidad_from).toFixed(2)}</td>
+        <td id="cantidad_tabla">${cantidad_from}</td>
         <td>${mov.moneda_to}</td>
-        <td id="cantidad_tabla">${Number(mov.cantidad_to).toFixed(2)}</td>
+        <td id="cantidad_tabla">${cantidad_to_dec}</td>
         </tr>
       `;
     }
@@ -188,3 +212,31 @@ window.onload = function() {
   const selector_tema = document.querySelector('#selector-tema');
   selector_tema.addEventListener('change', cambiarTema);
 };
+
+function formatNumber(num) {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.').replace(/\.(?=[^.]*$)/, ',')
+}
+
+//a function that takes a string like 12-09-2019 and returns 12 Abril 2019
+function formatDate(date) {
+  const dateParts = date.split("-");
+  const day = dateParts[0];
+  const month = dateParts[1];
+  const year = dateParts[2];
+  console.log(day, month, year);
+  const monthNames = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
+  ];
+  return day + " " + monthNames[month - 1] + " " + year;
+}

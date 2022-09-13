@@ -64,9 +64,11 @@ def alta_movimiento():
         data = request.get_json()
         request.close()
 
-    fecha = date.today().isoformat()
+    fecha_aux = date.today()
+    fecha = ""
     try:
-        datetime.strptime(fecha, '%Y-%m-%d')
+        fecha = fecha_aux.strftime('%d-%m-%Y')
+        print(fecha)
     except ValueError:
         output = {"status":"failed", "error":"La fecha introducida no es valida"}
         return output, status.HTTP_400_BAD_REQUEST

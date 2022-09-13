@@ -33,9 +33,9 @@
             <th class="titulo-tabla">Fecha</th>
             <th class="titulo-tabla">Hora</th>
             <th class="titulo-tabla">Moneda_from</th>
-            <th class="titulo-tabla numero">Cantidad</th>
-            <th class="titulo-tabla acciones">Moneda_to</th>
-            <th class="titulo-tabla acciones">Cantidad_to</th>
+            <th class="titulo-tabla">Cantidad</th>
+            <th class="titulo-tabla">Moneda_to</th>
+            <th class="titulo-tabla">Cantidad_to</th>
           </tr>
         </thead>
         
@@ -44,16 +44,18 @@
         </tbody>
       </table>
       <p id="error-movimientos"></p>  
+    
+    <section class="interfaz">
       <!--Empieza la interfaz de usuario-->
-      <div>
+      <div id="linea">
       <label for="moneda_from" class="form">From:</label>
       <select id="moneda_from" name="monedas" class="form">
         <!-- Cargamos las monedas disponibles desde js -->
       </select>
-      
-      
       <label for="cantidad_from" class="form">Cantidad:</label>
       <input type="text" id="cantidad_from" name="cantidad_from" class="form">
+      </div>
+      <div id="linea">
       <label for="moneda_to" class="form" id="form">Moneda_to:</label>
       <select id="moneda_to" name="monedas" class="form">
         <!-- Cargamos las monedas disponibles desde js -->
@@ -61,12 +63,13 @@
 
       <label for="conversion" class="form">Conversion:</label>
       <input type="number" id="conversion" name="conversion" class="form">
+      </div>
+      <div id="botones">
       <button id="boton-convertir">Convertir</button>
       <button id="boton-comprar">Comprar</button>
-      
       </div>
     </section>
-
+  </section>
     <section class="seccion-status">
       <div class="paper" id="estado_cuenta">
         <table>

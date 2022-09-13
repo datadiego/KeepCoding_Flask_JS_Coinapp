@@ -23,7 +23,7 @@ nav.main-menu a {
 }
 
 main {
-  max-width: 800px;
+  max-width: 1200px;
   margin: auto;
   padding: 0 20px;
 }
@@ -194,4 +194,15 @@ select#selector-tema{
 #cantidad_tabla{
   text-align: right;
   padding-right: 5px;
+}
+.seccion-status{
+  width:25%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.interfaz{
+  display: inline-block;
+  /* line up horizontally */
+  margin-left: 250px;
+  
 }
