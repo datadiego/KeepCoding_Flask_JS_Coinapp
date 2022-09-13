@@ -6,10 +6,11 @@ header {
   line-height: 50px;
   padding-left: 25px;
 }
+
 body{
   background-color: #1d1d1d;
-
 }
+
 nav {
   background-color: #19a187;
   color: white;
@@ -30,7 +31,6 @@ main {
 
 table.paper {
   width: 100%;
-
 }
 
 .titulo-tabla {
@@ -39,22 +39,9 @@ table.paper {
   width: 8%;
 }
 
-.numero,
-.acciones {
-  text-align: left;
-}
-
-.mini-boton {
-  border: solid 1px darkgray;
-  background-color: lightgray;
-  border-radius: 3px;
-  padding: 0 2px;
-}
-
-table.paper .error {
-  font-size: small;
-  padding-left: 40px;
-  color: #990000;
+#cantidad_tabla{
+  text-align: right;
+  padding-right: 5px;
 }
 
 .pie-de-pagina {
@@ -64,37 +51,6 @@ table.paper .error {
   border-top: solid 1px #ffc400;
 }
 
-.lista-vacia {
-  text-align: center;
-  padding: 20px;
-  color: #666666;
-}
-
-/* Estilos del formulario */
-
-/* .campo-formulario label {
-  display: block;
-  font-size: 1rem;
-  font-weight: bold;
-  padding: 0;
-  margin-top: .75rem;
-}
-
-.campo-formulario .radio-label,
-.campo-formulario>input[type="radio"]~label {
-  display: inline-block;
-  margin-right: 2rem;
-  margin-bottom: .5rem;
-  
-} */
-
-/* .campo-formulario input:not([type="radio"]) {
-  width: 100%;
-  
-} */
-
-
-
 .paper, select{
   background-color: #282828;
   color: white;
@@ -102,46 +58,44 @@ table.paper .error {
 
 label, input, textarea{
   margin-left: 20px;
-  
 }
 
 label.form1{
 margin-left: 300px; 
-
 }
 button.form1{
   margin-left: 300px;
   margin-right: 100px;
 }
+
 button{
   display:inline-block;
   background-color: #1d1d1d;
   border-color: #666666;
 }
+
 input:not([type=submit]):not([type=reset]):not([type=radio]):not([type=checkbox]),
 textarea, select {
 background:#101010;
 }
+
 select#selector-tema{
   float: right;
   margin-right: 20px;
 }
+
 #mensajes-error{
   color: #e00000;
   font-size: large;
   padding-left: 40px;
 }
-#cantidad_tabla{
-  text-align: right;
-  padding-right: 5px;
-}
+
 .seccion-status{
   width:25%;
   margin-left: auto;
   margin-right: auto;
 }
+
 .interfaz{
-  display: inline-block;
-  /* line up horizontally */
-  
+  display: inline-block; 
 }
