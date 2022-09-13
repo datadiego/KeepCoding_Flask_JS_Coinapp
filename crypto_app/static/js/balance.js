@@ -1,3 +1,5 @@
+//TODO: cuando hacemos un movimiento o una consulta satisfactoria, se debe eliminar cualquier mensajes de error
+//TODO: añadir flask-API a requirements.txt
 const peticion_movimientos = new XMLHttpRequest();
 const peticion_rate = new XMLHttpRequest();
 const peticion_compra = new XMLHttpRequest();
@@ -238,4 +240,3 @@ function formatDate(date) {
   return day + " " + monthNames[month - 1] + " " + year;
 }
 
-//TODO: cuando hacemos un movimiento o una consulta satisfactoria, se deben eliminar los mensajes de error

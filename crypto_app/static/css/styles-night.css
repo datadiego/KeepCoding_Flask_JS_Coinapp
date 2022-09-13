@@ -91,7 +91,7 @@ select#selector-tema{
 }
 
 .seccion-status{
-  width:25%;
+  width:35%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -103,3 +103,4 @@ td{
   white-space: nowrap;
     overflow: hidden;
 }
+/* TODO: alinear cifras de estado de la wallet a la derecha */
