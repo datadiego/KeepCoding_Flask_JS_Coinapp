@@ -5,7 +5,7 @@ class DBManager:
     def __init__(self, ruta):
         self.ruta = ruta
 
-    def consultaConParametros(self, consulta, params): #SE SALVA
+    def consultaConParametros(self, consulta, params): 
         conexion = sqlite3.connect(self.ruta)
         cursor = conexion.cursor()
         resultado = False
@@ -19,6 +19,33 @@ class DBManager:
         conexion.close()
         return resultado
 
+    def consultaSQL(self, consulta):
+        """
+        Método genérico de consulta a la base de datos
+
+        Parámetros:
+        consulta: string con la petición escrita en sqlite
+        """
+        conexion = sqlite3.connect(self.ruta)
+        cursor = conexion.cursor()
+        cursor.execute(consulta)
+
+        self.movimientos = []
+        nombres_columnas = []
+
+        for desc_columna in cursor.description:
+            nombres_columnas.append(desc_columna[0])
+        datos = cursor.fetchall()
+
+        for dato in datos:
+            movimiento = {}
+            indice = 0
+            for nombre in nombres_columnas:
+                movimiento[nombre] = dato[indice]
+                indice += 1
+            self.movimientos.append(movimiento)
+        conexion.close()
+        return self.movimientos
     def devuelve_movimientos(self): #SE SALVA
         """
         Este método devuelve un diccionario con todos los movimientos de la DB actuales
