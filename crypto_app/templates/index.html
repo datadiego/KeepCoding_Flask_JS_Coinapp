@@ -30,12 +30,12 @@
       <table>
         <thead>
           <tr>
-            <th class="titulo-tabla">Fecha</th>
-            <th class="titulo-tabla">Hora</th>
-            <th class="titulo-tabla">Moneda_from</th>
-            <th class="titulo-tabla">Cantidad</th>
-            <th class="titulo-tabla">Moneda_to</th>
-            <th class="titulo-tabla">Cantidad_to</th>
+            <th class="titulo-tabla">Date</th>
+            <th class="titulo-tabla">Time</th>
+            <th class="titulo-tabla">From</th>
+            <th class="titulo-tabla">Amount</th>
+            <th class="titulo-tabla">To</th>
+            <th class="titulo-tabla">Amount</th>
           </tr>
         </thead>
         
@@ -48,25 +48,25 @@
     <section class="interfaz">
       <!--Empieza la interfaz de usuario-->
       <div id="linea_interfaz">
-      <label for="moneda_from" class="form1">From:</label>
+      <label for="moneda_from" class="form1">From </label>
       <select id="moneda_from" name="monedas" class="form">
         <!-- Cargamos las monedas disponibles desde js -->
       </select>
-      <label for="cantidad_from" class="form">Cantidad:</label>
+      <label for="cantidad_from" class="form">Amount: </label>
       <input type="text" id="cantidad_from" name="cantidad_from" class="form">
       </div>
 
       <div id="linea_interaz">
-      <label for="moneda_to" class="form1">Moneda_to:</label>
+      <label for="moneda_to" class="form1">To: </label>
       <select id="moneda_to" name="monedas">
       </select>
-      <label for="conversion" class="form">Conversion:</label>
+      <label for="conversion" class="form">Rate: </label>
       <input type="number" id="conversion" name="conversion" class="form">
       </div>
 
       <div id="linea_interfaz">
-      <button id="boton-convertir" class="form1">Convertir</button>
-      <button id="boton-comprar">Comprar</button>
+      <button id="boton-convertir" class="form1">💹 Rate</button>
+      <button id="boton-comprar">💳 Buy</button>
       </div>
     </section>
   </section>
