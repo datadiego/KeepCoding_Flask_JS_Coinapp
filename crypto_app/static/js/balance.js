@@ -3,7 +3,6 @@ const peticion_rate = new XMLHttpRequest();
 const peticion_compra = new XMLHttpRequest();
 const peticion_status = new XMLHttpRequest();
 const peticion_monedas = new XMLHttpRequest();
-let tema_dark = true; 
 function obtenerMovimientos() {
   peticion_movimientos.open('GET', 'http://127.0.0.1:5000/api/v1/movimientos', true);
   peticion_movimientos.send();
@@ -16,6 +15,7 @@ function obtenerMonedasDisponibles(){
   peticion_monedas.open('GET', 'http://127.0.0.1:5000/api/v1/monedas_disponibles_usuario', true);
   peticion_monedas.send();
 }
+
 function mostrarMonedasDisponibles(){
   const select_from = document.querySelector('#moneda_from');
   const select_to = document.querySelector('#moneda_to');
@@ -30,6 +30,7 @@ function mostrarMonedasDisponibles(){
     select_to.innerHTML = html;
   }
 }
+
 function mostrarEstadoCuenta(){
   const tabla_estado = document.querySelector('#cuerpo-tabla-estado');
   const mensaje = document.querySelector("#mensajes-error")
@@ -46,11 +47,13 @@ function mostrarEstadoCuenta(){
     else{
       mensaje.innerHTML = '';
     for (let i = 0; i < monedas.length; i = i + 1) {
+      const moneda_aux = Number(valores[i]).toFixed(2);
+      const moneda = formatNumber(moneda_aux);
       if (valores[i] != 0) {
         html = html + `
         <tr>
         <td>${monedas[i]}</td>
-        <td>${Number(valores[i]).toFixed(2)}</td>
+        <td>${moneda}</td>
         </tr>
       `;
       }
@@ -68,7 +71,6 @@ function mostrarMovimientos() {
   if (this.readyState === 4 && this.status === 200) {
     const respuesta = JSON.parse(peticion_movimientos.responseText);
     const movimientos = respuesta.data;
-    console.log(movimientos.length)
     if (movimientos.length === 0) {
       mensajes.innerHTML = 'No hay movimientos para mostrar';
     }
@@ -78,21 +80,22 @@ function mostrarMovimientos() {
     for (let i = 0; i < movimientos.length; i = i + 1) {
       const mov = movimientos[i];
       const cantidad_to_dec = Number(mov.cantidad_to).toFixed(2);
-
       const cantidad_from_dec = Number(mov.cantidad_from).toFixed(2);
+
       const cantidad_from = formatNumber(cantidad_from_dec);
-      //TODO: cambiar cantidad_to
+      const cantidad_to = formatNumber(cantidad_to_dec);
 
       const aux = formatDate(mov.date);
-      console.log(aux)
+
+      const hora = formatearHora(mov.time)
       html = html + `
         <tr>
         <td>${aux}</td>
-        <td>${mov.time}</td>
+        <td>${hora}</td>
         <td>${mov.moneda_from}</td>
         <td id="cantidad_tabla">${cantidad_from}</td>
         <td>${mov.moneda_to}</td>
-        <td id="cantidad_tabla">${cantidad_to_dec}</td>
+        <td id="cantidad_tabla">${cantidad_to}</td>
         </tr>
       `;
     }
@@ -101,6 +104,18 @@ function mostrarMovimientos() {
   tabla.innerHTML = html; 
   } 
 }
+function formatearHora(hora){
+  let hora_formateada = hora.split(":")
+  console.log(hora_formateada)
+  for(let i=0; i<hora_formateada.length; i++){
+    console.log(hora_formateada[i])
+    elemento = hora_formateada[i]
+    if(elemento.length == 1){
+      hora_formateada[i] = "0" + elemento
+    }
+  }
+    return hora_formateada[0]+":"+hora_formateada[1]+":"+hora_formateada[2]
+  }
 
 function obtenerConversion() {
   //Probar a crear la peticion aqui dentro
@@ -153,9 +168,7 @@ function compraMonedas() {
   }
 }
 function compruebaCompra(){
-  console.log("La compra fue tal que asi socio: "+this.status)
   if (this.status === 200){
-    console.log("La compra fue exitosa")
     obtenerMovimientos()
     mostrarMovimientos()
     obtenerEstadoCuenta()
@@ -208,7 +221,6 @@ function formatDate(date) {
   const day = dateParts[0];
   const month = dateParts[1];
   const year = dateParts[2];
-  console.log(day, month, year);
   const monthNames = [
     "Enero",
     "Febrero",
