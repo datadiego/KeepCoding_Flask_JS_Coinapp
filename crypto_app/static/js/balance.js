@@ -32,7 +32,7 @@ function mostrarMonedasDisponibles(){
 }
 function mostrarEstadoCuenta(){
   const tabla_estado = document.querySelector('#cuerpo-tabla-estado');
-  const mensaje = document.querySelector("#error-estado")
+  const mensaje = document.querySelector("#mensajes-error")
   let html = '';
   
   if (this.readyState === 4 && this.status === 200) {
@@ -78,7 +78,7 @@ function mostrarEstadoCuenta(){
 // }
 function mostrarMovimientos() {
   const tabla = document.querySelector('#cuerpo-tabla');
-  const mensajes = document.querySelector("#error-movimientos")
+  const mensajes = document.querySelector("#mensajes-error")
   let html = '';
   if (this.readyState === 4 && this.status === 200) {
     const respuesta = JSON.parse(peticion_movimientos.responseText);
@@ -240,3 +240,5 @@ function formatDate(date) {
   ];
   return day + " " + monthNames[month - 1] + " " + year;
 }
+
+//TODO: cuando hacemos un movimiento o una consulta satisfactoria, se deben eliminar los mensajes de error

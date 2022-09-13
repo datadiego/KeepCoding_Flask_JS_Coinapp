@@ -72,7 +72,7 @@ table.paper .error {
 
 /* Estilos del formulario */
 
-.campo-formulario label {
+/* .campo-formulario label {
   display: block;
   font-size: 1rem;
   font-weight: bold;
@@ -86,92 +86,32 @@ table.paper .error {
   margin-right: 2rem;
   margin-bottom: .5rem;
   
-}
+} */
 
-.campo-formulario input:not([type="radio"]) {
+/* .campo-formulario input:not([type="radio"]) {
   width: 100%;
   
-}
+} */
 
-.lista-errores {
-  background-color: rgba(200, 0, 0, .25);
-  color: darkred;
-  border: solid 2px darkred;
-  padding: 2rem;
-  font-size: 1rem;
-  margin: 1rem 0;
-  display: flex;
-  align-items: center;
-}
 
-.icono-error {
-  margin-right: 1rem;
-  font-size: 32px;
-}
-
-.exito-flash {
-  background-color: rgba(0, 200, 0, .25);
-  color: darkgreen;
-  border: solid 2px darkgreen;
-  padding: 2rem;
-  font-size: 1rem;
-  margin: 1rem 0;
-  display: flex;
-  align-items: center;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, .5);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.overlay.off {
-  display: none;
-}
-
-.doble-anillo {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
-}
-
-.doble-anillo:after {
-  content: " ";
-  display: block;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border: 6px solid white;
-  border-radius: 50%;
-  border-color: white transparent white transparent;
-  animation: giro 1.2s linear infinite;
-}
-
-@keyframes giro {
-  0% {
-    transform: rotate(0deg)
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
 
 .paper, select{
   background-color: #282828;
   color: white;
 }
 
-label.form, button{
-  margin-left:100px;
+label, input, textarea{
+  margin-left: 20px;
+  
+}
+
+label.form1{
+margin-left: 300px; 
+
+}
+button.form1{
+  margin-left: 300px;
+  margin-right: 100px;
 }
 button{
   display:inline-block;
@@ -203,6 +143,5 @@ select#selector-tema{
 .interfaz{
   display: inline-block;
   /* line up horizontally */
-  margin-left: 250px;
   
 }
