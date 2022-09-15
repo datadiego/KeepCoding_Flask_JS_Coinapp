@@ -68,7 +68,7 @@ def alta_movimiento():
     fecha = ""
     try:
         fecha = fecha_aux.strftime('%d-%m-%Y')
-        print(fecha)
+
     except ValueError:
         output = {"status":"failed", "error":"La fecha introducida no es valida"}
         return output, status.HTTP_400_BAD_REQUEST
@@ -79,18 +79,15 @@ def alta_movimiento():
         datetime.strptime(hora, '%H:%M:%S')
     except ValueError:
         output = {"status":"failed", "error":"La hora introducida no es valida"}
-        print("La hora introducida no es valida")
         return output, status.HTTP_400_BAD_REQUEST
     except TypeError:
         output = {"status":"failed", "error":"La hora introducida no es valida"}
-        print("La hora introducida no es valida")
         return output, status.HTTP_400_BAD_REQUEST
         
     
     moneda_from = data["moneda_from"]
     if moneda_from not in MONEDAS:
         output = {"status":"failed", "error":f"La moneda de origen {moneda_from} no existe"}
-        print("Error en moneda_from")
         return output, status.HTTP_400_BAD_REQUEST
     
     moneda_to = data["moneda_to"]
@@ -107,10 +104,7 @@ def alta_movimiento():
     valores_wallet = valores_wallet["data"]
 
     if moneda_from != "EUR":
-        print("La moneda de origen no es EUR")
         try:
-            print("Tengo ",valores_wallet[moneda_from],moneda_from)
-            print("Necesito ",cantidad_from,moneda_from)
             if float(cantidad_from) > valores_wallet[moneda_from]:
                 output = {"status":"failed", "error":f"No tienes suficiente saldo en {moneda_from}"}
                 return output, status.HTTP_400_BAD_REQUEST
