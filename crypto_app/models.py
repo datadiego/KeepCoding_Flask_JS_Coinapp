@@ -14,7 +14,6 @@ class DBManager:
             conexion.commit()
             resultado = True
         except Exception as error:
-            print("ERROR DB:", error)
             conexion.rollback()
         conexion.close()
         return resultado
