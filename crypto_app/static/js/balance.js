@@ -49,13 +49,12 @@ function mostrarEstadoCuenta(){
     else{
       mensaje.innerHTML = '';
     for (let i = 0; i < monedas.length; i = i + 1) {
-      const moneda_aux = Number(valores[i]).toFixed(2);
-      const moneda = formatNumber(moneda_aux);
+      const moneda = valores[i].toLocaleString('es-ES', {minimumFractionDigits: 2, maximumFractionDigits: 2})
       if (valores[i] != 0) {
         html = html + `
         <tr>
         <td>${monedas[i]}</td>
-        <td>${moneda}</td>
+        <td id="cantidad_tabla">${moneda}</td>
         </tr>
       `;
       }
@@ -81,11 +80,10 @@ function mostrarMovimientos() {
     mensajes.innerHTML = '';
     for (let i = 0; i < movimientos.length; i = i + 1) {
       const mov = movimientos[i];
-      const cantidad_to_dec = Number(mov.cantidad_to).toFixed(2);
-      const cantidad_from_dec = Number(mov.cantidad_from).toFixed(2);
-
-      const cantidad_from = formatNumber(cantidad_from_dec);
-      const cantidad_to = formatNumber(cantidad_to_dec);
+      const cantidad_to_aux = mov.cantidad_to;
+      const cantidad_from_aux = mov.cantidad_from;
+      const cantidad_to = cantidad_to_aux.toLocaleString('es-ES', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      const cantidad_from = cantidad_from_aux.toLocaleString('es-ES', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
       const aux = formatDate(mov.date);
 
@@ -106,11 +104,32 @@ function mostrarMovimientos() {
   tabla.innerHTML = html; 
   } 
 }
+
+function formatDate(date) {
+  const dateElements = date.split("-");
+  const day = dateElements[0];
+  const month = dateElements[1];
+  const year = dateElements[2];
+  const monthNames = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
+  ];
+  return day + " " + monthNames[month - 1] + " " + year;
+}
+
 function formatearHora(hora){
   let hora_formateada = hora.split(":")
-  console.log(hora_formateada)
   for(let i=0; i<hora_formateada.length; i++){
-    console.log(hora_formateada[i])
     elemento = hora_formateada[i]
     if(elemento.length == 1){
       hora_formateada[i] = "0" + elemento
@@ -140,6 +159,7 @@ function obtenerConversion() {
       document.getElementById("mensajes-error").innerHTML = respuesta.error
     }
     if (estado_peticion === "success"){
+      const rate = datos.tipo_cambio.toLocaleString('es-ES', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     document.getElementById("conversion").value = datos.tipo_cambio.toFixed(2);
     }
   }
@@ -213,30 +233,9 @@ window.onload = function() {
   selector_tema.addEventListener('change', cambiarTema);
 };
 
+// TODO: cambiar este metodo
 function formatNumber(num) {
   return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.').replace(/\.(?=[^.]*$)/, ',')
 }
 
-//a function that takes a string like 12-09-2019 and returns 12 Abril 2019
-function formatDate(date) {
-  const dateParts = date.split("-");
-  const day = dateParts[0];
-  const month = dateParts[1];
-  const year = dateParts[2];
-  const monthNames = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre"
-  ];
-  return day + " " + monthNames[month - 1] + " " + year;
-}
 
