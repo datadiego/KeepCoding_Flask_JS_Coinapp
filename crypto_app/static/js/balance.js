@@ -6,6 +6,7 @@ const peticion_rate = new XMLHttpRequest();
 const peticion_compra = new XMLHttpRequest();
 const peticion_status = new XMLHttpRequest();
 const peticion_monedas = new XMLHttpRequest();
+
 function obtenerMovimientos() {
   peticion_movimientos.open('GET', 'http://127.0.0.1:5000/api/v1/movimientos', true);
   peticion_movimientos.send();
@@ -83,8 +84,9 @@ function mostrarMovimientos() {
       const mov = movimientos[i];
       const cantidad_to_aux = mov.cantidad_to;
       const cantidad_from_aux = mov.cantidad_from;
-      const cantidad_to = cantidad_to_aux.toLocaleString('es-ES', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
       const cantidad_from = cantidad_from_aux.toLocaleString('es-ES', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      const cantidad_to = cantidad_to_aux.toLocaleString('es-ES', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
       const aux = formatDate(mov.date);
 
@@ -150,10 +152,10 @@ function obtenerConversion() {
   peticion_rate.open('GET', `http://127.0.0.1:5000/api/v1/rate/${moneda_from}/${moneda_to}/${cantidad}`, false);
   peticion_rate.send();
   if(peticion_rate.status === 400){
-    document.getElementById("mensajes-error").innerHTML = "No se puede realizar la conversion, comprueba tu APIKEY";
+    document.getElementById("mensajes-error").innerHTML = "ERROR: No se puede realizar la conversion, comprueba tu APIKEY";
   }
   if(peticion_rate.status === 404){
-    document.getElementById("mensajes-error").innerHTML = "No se puede realizar la conversion, hubo un error en la peticion";
+    document.getElementById("mensajes-error").innerHTML = "ERROR: No se puede realizar la conversion, hubo un error en la peticion";
   }
   if (peticion_rate.readyState === 4 && peticion_rate.status === 200) {
     const respuesta = JSON.parse(peticion_rate.responseText);
@@ -188,20 +190,26 @@ function compraMonedas() {
     peticion_compra.open('POST', 'http://127.0.0.1:5000/api/v1/movimiento', true);
     peticion_compra.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
     peticion_compra.send(JSON.stringify(output_aux));
-    //peticion_compra.onload = obtenerMovimientos
-    //peticion_movimientos.onload = mostrarMovimientos
+
     peticion_compra.onload = compruebaCompra
   }
 }
+function limpiarInterfaz(){
+  document.getElementById("mensajes-error").innerHTML = "";
+  document.getElementById("conversion").value = "";
+  document.getElementById("cantidad_from").value = "";
+}
+
 function compruebaCompra(){
   if (this.status === 200){
     obtenerMovimientos()
     mostrarMovimientos()
     obtenerEstadoCuenta()
     mostrarEstadoCuenta()
+    limpiarInterfaz()
   }
   if (this.status === 400){
-    document.getElementById("mensajes-error").innerHTML = "ERROR:\n"+this.responseText
+    document.getElementById("mensajes-error").innerHTML = "ERROR:\n"+this.responseText;
   }
 }
 function cambiarTema() {
@@ -237,9 +245,6 @@ window.onload = function() {
   selector_tema.addEventListener('change', cambiarTema);
 };
 
-// TODO: cambiar este metodo
-function formatNumber(num) {
-  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.').replace(/\.(?=[^.]*$)/, ',')
-}
+
 
 
