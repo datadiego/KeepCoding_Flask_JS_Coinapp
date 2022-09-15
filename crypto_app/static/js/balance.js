@@ -1,5 +1,3 @@
-//TODO: cuando hacemos un movimiento o una consulta correcta, se debe eliminar cualquier mensajes de error
-//TODO: despues de un movimiento correcto, limpiar los campos de la compra
 //TODO: añadir flask-API a requirements.txt
 const peticion_movimientos = new XMLHttpRequest();
 const peticion_rate = new XMLHttpRequest();
