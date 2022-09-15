@@ -94,7 +94,9 @@ def alta_movimiento():
     if moneda_to not in MONEDAS:
         output = {"status":"failed", "error":f"La moneda de destino {moneda_to} no existe"}
         return output, status.HTTP_400_BAD_REQUEST
-
+    if moneda_from == moneda_to:
+        output = {"status":"failed", "error":"Las monedas de origen y destino no pueden ser iguales"}
+        return output, status.HTTP_400_BAD_REQUEST
     cantidad_to = data["cantidad_to"]
     cantidad_from = data["cantidad_from"]
 
