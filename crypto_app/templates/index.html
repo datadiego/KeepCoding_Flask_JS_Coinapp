@@ -45,28 +45,25 @@
       </table>
       <p id="mensajes-error"></p>
 
-    <section class="interfaz">
+    <section class="interfaz_usuario">
       <!--Empieza la interfaz de usuario-->
-      <div id="linea_interfaz">
-      <label for="moneda_from" class="form1">From:</label>
-      <select id="moneda_from" name="monedas" class="form">
-        <!-- Cargamos las monedas disponibles desde js -->
-      </select>
-      <label for="cantidad_from" class="form">Amount: </label>
-      <input type="text" id="cantidad_from" name="cantidad_from" class="form">
-      </div>
+      <div class="linea_from">
+        <label for="moneda_from" class="form1">From:</label>
+        <select id="moneda_from" name="monedas" class="form"></select>
 
-      <div id="linea_interaz">
-      <label for="moneda_to" class="form1">To:</label>
-      <select id="moneda_to" name="monedas">
-      </select>
-      <label for="conversion" class="form">Rate:</label>
-      <input type="number" id="conversion" name="conversion" class="form">
+        <label for="cantidad_from" class="form">Amount: </label>
+        <input type="text" id="cantidad_from" name="cantidad_from" class="form">
       </div>
-
-      <div id="linea_interfaz">
-      <button id="boton-convertir" class="form1">Rate</button>
-      <button id="boton-comprar">Buy</button>
+      
+      <div class="linea_conversion">
+        <label for="moneda_to" class="form1">To:</label>
+        <select id="moneda_to" name="monedas"></select>
+        <label for="conversion" class="form">Rate:</label>
+        <input type="number" id="conversion" name="conversion" class="form">
+      </div>
+      <div class="linea_botones">
+        <button id="boton-convertir" class="form1">Rate</button>
+        <button id="boton-comprar">Buy</button>
       </div>
     </section>
   </section>

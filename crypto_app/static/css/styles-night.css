@@ -56,20 +56,10 @@ table.paper {
   color: white;
 }
 
-label, input, textarea{
-  margin-left: 20px;
-}
 
-label.form1{
-margin-left: 150px; 
-}
-button.form1{
-  margin-left: 150px;
-  margin-right: 100px;
-}
+
 
 button{
-  display:inline-block;
   background-color: #1d1d1d;
   border-color: #666666;
 }
@@ -96,11 +86,19 @@ select#selector-tema{
   margin-right: auto;
 }
 
-.interfaz{
-  display: inline-block; 
-}
+
 td{
   white-space: nowrap;
     overflow: hidden;
 }
-/* TODO: alinear cifras de estado de la wallet a la derecha */
+.linea_from, .linea_conversion, .linea_botones{
+display: flex;
+justify-content: space-evenly;
+margin-left: 100px;
+margin-right: 100px;
+}
+
+label{
+  min-width: 100px;
+  text-align: right;
+}

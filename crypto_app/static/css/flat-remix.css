@@ -80,7 +80,6 @@ a:link:hover, a:visited:hover, a:active:hover, a:hover {
 label {
     cursor: pointer;
     display: inline-block;
-    padding: .56em 0;
 }
 
 h1, h2, h3, h4, h5, h6 { line-height: 1.5em; }
@@ -176,7 +175,6 @@ textarea, select {
     background: #1d1d1d;
     color: #fff;
     border-radius: 3px;
-    margin: 7px 0;
     height: 45px;
     padding: 0 10px;
     font-size: 14px;
