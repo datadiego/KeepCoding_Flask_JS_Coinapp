@@ -108,9 +108,13 @@ def alta_movimiento():
 
     if moneda_from != "EUR":
         print("La moneda de origen no es EUR")
-        print("Tengo ",valores_wallet[moneda_from],moneda_from)
-        print("Necesito ",cantidad_from,moneda_from)
-        if float(cantidad_from) > valores_wallet[moneda_from]:
+        try:
+            print("Tengo ",valores_wallet[moneda_from],moneda_from)
+            print("Necesito ",cantidad_from,moneda_from)
+            if float(cantidad_from) > valores_wallet[moneda_from]:
+                output = {"status":"failed", "error":f"No tienes suficiente saldo en {moneda_from}"}
+                return output, status.HTTP_400_BAD_REQUEST
+        except KeyError:
             output = {"status":"failed", "error":f"No tienes suficiente saldo en {moneda_from}"}
             return output, status.HTTP_400_BAD_REQUEST
     

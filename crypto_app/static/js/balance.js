@@ -1,4 +1,5 @@
-//TODO: cuando hacemos un movimiento o una consulta satisfactoria, se debe eliminar cualquier mensajes de error
+//TODO: cuando hacemos un movimiento o una consulta correcta, se debe eliminar cualquier mensajes de error
+//TODO: despues de un movimiento correcto, limpiar los campos de la compra
 //TODO: añadir flask-API a requirements.txt
 const peticion_movimientos = new XMLHttpRequest();
 const peticion_rate = new XMLHttpRequest();
@@ -148,8 +149,11 @@ function obtenerConversion() {
 
   peticion_rate.open('GET', `http://127.0.0.1:5000/api/v1/rate/${moneda_from}/${moneda_to}/${cantidad}`, false);
   peticion_rate.send();
+  if(peticion_rate.status === 400){
+    document.getElementById("mensajes-error").innerHTML = "No se puede realizar la conversion, comprueba tu APIKEY";
+  }
   if(peticion_rate.status === 404){
-    alert("No se pudo realizar la conversion, revisa los datos o intentalo mas tarde")
+    document.getElementById("mensajes-error").innerHTML = "No se puede realizar la conversion, hubo un error en la peticion";
   }
   if (peticion_rate.readyState === 4 && peticion_rate.status === 200) {
     const respuesta = JSON.parse(peticion_rate.responseText);
