@@ -63,16 +63,22 @@ def alta_movimiento():
     if request.method == 'POST':
         data = request.get_json()
         request.close()
+    db = DBManager(RUTA_DB)
+    # fecha_aux = date.today()
+    # fecha = ""
+    # try:
+    #     fecha = fecha_aux.strftime('%d-%m-%Y')
 
-    fecha_aux = date.today()
+    # except ValueError:
+    #     output = {"status":"failed", "error":"La fecha introducida no es valida"}
+    #     return output, status.HTTP_400_BAD_REQUEST
+    validacion_fecha = db.valida_fecha()
     fecha = ""
-    try:
-        fecha = fecha_aux.strftime('%d-%m-%Y')
-
-    except ValueError:
-        output = {"status":"failed", "error":"La fecha introducida no es valida"}
-        return output, status.HTTP_400_BAD_REQUEST
-    
+    if validacion_fecha["status"] == "failed":
+        return validacion_fecha, status.HTTP_400_BAD_REQUEST
+    else:
+        fecha = validacion_fecha["fecha"]
+        
     hora = time(datetime.now().hour, datetime.now().minute, datetime.now().second)
     hora = f"{hora.hour}:{hora.minute}:{hora.second}"
     try:

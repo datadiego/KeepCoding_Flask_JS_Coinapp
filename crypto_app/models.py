@@ -1,5 +1,6 @@
 import sqlite3
 from crypto_app.settings import MONEDAS, RUTA_DB
+from datetime import datetime, date, time
 
 class DBManager:
     def __init__(self, ruta):
@@ -90,19 +91,16 @@ class DBManager:
         for moneda in lista_monedas:
             valores_monedas[moneda] = 0
         
-        #Sumamos y restamos segun el valor de moneda_from y moneda_to:
         for elem in data["data"]:
             valores_monedas[elem["moneda_from"]] -= elem["cantidad_from"]
             valores_monedas[elem["moneda_to"]] += elem["cantidad_to"]
-        #TODO: si el valor de las monedas es cero, se quedan fuera del diccionario
             
-        #if value is 0, delete key
         for key in list(valores_monedas):
             if valores_monedas[key] < 0.0:
                 del valores_monedas[key]
         output = {"status":"success", "data":valores_monedas}
         return output
-    def comprueba_db(self): #SE SALVA
+    def comprueba_db(self): 
         try:
             file = open(RUTA_DB)
             file.close()
@@ -112,8 +110,17 @@ class DBManager:
             cursor.execute('CREATE TABLE "movimientos" ("id" INTEGER NOT NULL UNIQUE, "date" TEXT NOT NULL, "time" TEXT NOT NULL, "moneda_from" TEXT NOT NULL, "cantidad_from" REAL NOT NULL, "moneda_to" NUMERIC NOT NULL, "cantidad_to" REAL NOT NULL, PRIMARY KEY("id" AUTOINCREMENT))')
             conexion.commit()
             conexion.close()
-        
+    def crear_fecha(self):        
+        fecha_aux = date.today()
+        fecha = ""
+        try:
+            fecha = fecha_aux.strftime('%d-%m-%Y')
+            output = {"status":"success", "data":fecha}
+            return output
 
+        except ValueError:
+            output = {"status":"failed", "error":"La fecha no es valida"}
+            return output
 
 def valida_moneda(moneda):
     """
