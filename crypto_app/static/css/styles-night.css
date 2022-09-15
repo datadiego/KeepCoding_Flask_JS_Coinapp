@@ -96,9 +96,15 @@ display: flex;
 justify-content: space-evenly;
 margin-left: 100px;
 margin-right: 100px;
+margin-bottom: 6px;
 }
 
 label{
   min-width: 100px;
   text-align: right;
 }
+
+/* .paper#movimientos {
+  min-height: 400px;
+
+} */
