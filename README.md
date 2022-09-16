@@ -71,9 +71,9 @@ FLASK_ENV=development
 ```
 - Renombra `env_template` a .`env`
 
-- Localiza el archivo `settings.py`, añade tu *APIKEY* de manera que quede así:
+- Localiza el archivo `settings.py`, pega tu *APIKEY* en la variable correspondiente:
 ```
-APIKEY = "Pon tu APIKEI de coinapi.io aqui"
+APIKEY = "Añade aqui tu APIKEY de coinapi.io"
 RUTA_DB = "db/movimientos.db"
 MONEDAS = ['EUR', 'USD', 'BTC', 'XTZ', 'DOGE', 'ETH'] #Añade otras monedas aqui
 ```
