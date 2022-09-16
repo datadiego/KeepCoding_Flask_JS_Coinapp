@@ -31,19 +31,7 @@ def movimientos():
 
 @app.route("/api/v1/rate/<string:moneda_origen>/<string:moneda_destino>/<float:cantidad>", methods=['GET'])
 def rate(moneda_origen: str, moneda_destino: str, cantidad: float):
-    #TODO: Cambiar esto por el metodo de DBManager
-    # if valida_moneda(moneda_origen) == False:
-    #     output = {
-    #         "status":"fail",
-    #         "error":"Las monedas seleccionadas no son válidas"
-    #     }
-    #     return output, status.HTTP_400_BAD_REQUEST
-    # if valida_moneda(moneda_destino) == False:
-    #     output = {
-    #         "status":"fail",
-    #         "error":"Las monedas seleccionadas no son válidas"
-    #     }
-    #     return output, status.HTTP_400_BAD_REQUEST
+
     db = DBManager(RUTA_DB)
     validacion_monedas = db.valida_monedas(moneda_origen, moneda_destino)
     if validacion_monedas["status"] == "failed":
