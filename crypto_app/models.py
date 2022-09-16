@@ -46,7 +46,7 @@ class DBManager:
             self.movimientos.append(movimiento)
         conexion.close()
         return self.movimientos
-    def devuelve_movimientos(self): #SE SALVA
+    def devuelve_movimientos(self):
         """
         Este método devuelve un diccionario con todos los movimientos de la DB actuales
         """
@@ -72,7 +72,7 @@ class DBManager:
         conexion.close()
         return cursor.lastrowid 
 
-    def status_cuenta(self): #SE SALVA
+    def status_cuenta(self):
         """
         Este método devuelve un diccionario con el número actual de monedas que tenemos en nuestra wallet
         """
