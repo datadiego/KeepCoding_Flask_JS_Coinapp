@@ -100,7 +100,7 @@ class DBManager:
                 del valores_monedas[key]
         output = {"status":"success", "data":valores_monedas}
         return output
-    def comprueba_db(self): 
+    def comprueba_db_creada(self): 
         try:
             file = open(RUTA_DB)
             file.close()
@@ -121,7 +121,68 @@ class DBManager:
         except ValueError:
             output = {"status":"failed", "error":"La fecha no es valida"}
             return output
-
+    def crear_hora(self):
+        hora = time(datetime.now().hour, datetime.now().minute, datetime.now().second)
+        hora = f"{hora.hour}:{hora.minute}:{hora.second}"
+        try:
+            datetime.strptime(hora, '%H:%M:%S')
+            output = {"status":"success", "data":hora}
+            return output
+        except ValueError:
+            output = {"status":"failed", "error":"La hora introducida no es valida"}
+            return output
+        except TypeError:
+            output = {"status":"failed", "error":"La hora introducida no es valida"}
+            return output    
+    def valida_monedas(self, moneda_from, moneda_to):
+        """
+        Este método comprueba si las monedas introducidas son validas
+        """
+        if moneda_from == moneda_to:
+            output = {"status":"failed", "error":f"Las monedas {moneda_to} introducidas son iguales"}
+            return output
+        if moneda_from not in MONEDAS:
+            output = {"status":"failed", "error":f"La moneda de origen {moneda_from} no es valida"}
+            return output
+        if moneda_to not in MONEDAS:
+            output = {"status":"failed", "error":f"La moneda de destino {moneda_to} no es valida"}
+            return output
+        output = {"status":"success"}
+        return output
+    def valida_cantidad(self, cantidad_from, cantidad_to):
+        """
+        Este método comprueba si la cantidad introducida es valida
+        """
+        try:
+            cantidad_from = float(cantidad_from)
+            cantidad_to = float(cantidad_to)
+            output = {"status":"success"}
+            return output
+        except ValueError:
+            output = {"status":"failed", "error":f"La cantidad introducida no es valida"}
+            return output
+    def saldo_suficiente(self, cantidad_from, moneda_from):
+        """
+        Este método comprueba si tenemos suficiente saldo para realizar la transacción
+        """
+        saldo_monedas = self.status_cuenta()
+        print(saldo_monedas)
+        saldo_monedas = saldo_monedas["data"]
+        print(moneda_from)
+        if moneda_from not in saldo_monedas:
+            output = {"status":"failed", "error":f"No tienes suficientes {moneda_from}"}
+            return output
+        else:    
+            try:
+                if cantidad_from > saldo_monedas["data"]:
+                    output = {"status":"failed", "error":f"No tienes suficientes {moneda_from}"}
+                    return output
+            except KeyError:
+                output = {"status":"failed", "error":f"No tienes suficientes {moneda_from}"}
+                return output
+            output = {"status":"success"}
+            return output
+        
 def valida_moneda(moneda):
     """
     Este método comprueba si la moneda introducida es válida

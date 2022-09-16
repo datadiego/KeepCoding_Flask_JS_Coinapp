@@ -14,7 +14,7 @@ def main():
 @app.route("/api/v1/status")
 def estado_inversion():
     db = DBManager(RUTA_DB)
-    db.comprueba_db()
+    db.comprueba_db_creada()
     output = db.status_cuenta()
     return output, status.HTTP_200_OK
 
@@ -25,7 +25,7 @@ def monedas_disponibles_usuario():
 @app.route("/api/v1/movimientos")
 def movimientos():
     db = DBManager(RUTA_DB)
-    db.comprueba_db()
+    db.comprueba_db_creada()
     output = db.devuelve_movimientos()
     return output, status.HTTP_200_OK
 
@@ -63,63 +63,40 @@ def alta_movimiento():
     if request.method == 'POST':
         data = request.get_json()
         request.close()
-    db = DBManager(RUTA_DB)
-    # fecha_aux = date.today()
-    # fecha = ""
-    # try:
-    #     fecha = fecha_aux.strftime('%d-%m-%Y')
-
-    # except ValueError:
-    #     output = {"status":"failed", "error":"La fecha introducida no es valida"}
-    #     return output, status.HTTP_400_BAD_REQUEST
-    validacion_fecha = db.valida_fecha()
     fecha = ""
+    hora = ""
+    moneda_from = data["moneda_from"]
+    moneda_to = data["moneda_to"]
+    cantidad_to = data["cantidad_to"]
+    cantidad_from = data["cantidad_from"]
+    
+    db = DBManager(RUTA_DB)
+    validacion_fecha = db.crear_fecha()
     if validacion_fecha["status"] == "failed":
         return validacion_fecha, status.HTTP_400_BAD_REQUEST
     else:
-        fecha = validacion_fecha["fecha"]
-        
-    hora = time(datetime.now().hour, datetime.now().minute, datetime.now().second)
-    hora = f"{hora.hour}:{hora.minute}:{hora.second}"
-    try:
-        datetime.strptime(hora, '%H:%M:%S')
-    except ValueError:
-        output = {"status":"failed", "error":"La hora introducida no es valida"}
-        return output, status.HTTP_400_BAD_REQUEST
-    except TypeError:
-        output = {"status":"failed", "error":"La hora introducida no es valida"}
-        return output, status.HTTP_400_BAD_REQUEST
-        
-    
-    moneda_from = data["moneda_from"]
-    if moneda_from not in MONEDAS:
-        output = {"status":"failed", "error":f"La moneda de origen {moneda_from} no existe"}
-        return output, status.HTTP_400_BAD_REQUEST
-    
-    moneda_to = data["moneda_to"]
-    if moneda_to not in MONEDAS:
-        output = {"status":"failed", "error":f"La moneda de destino {moneda_to} no existe"}
-        return output, status.HTTP_400_BAD_REQUEST
-    if moneda_from == moneda_to:
-        output = {"status":"failed", "error":"Las monedas de origen y destino no pueden ser iguales"}
-        return output, status.HTTP_400_BAD_REQUEST
-    cantidad_to = data["cantidad_to"]
-    cantidad_from = data["cantidad_from"]
+        fecha = validacion_fecha["data"]
 
-    db = DBManager(RUTA_DB)
-    db.comprueba_db()
-    valores_wallet = db.status_cuenta()
-    valores_wallet = valores_wallet["data"]
+    validacion_hora = db.crear_hora()
+    if validacion_hora["status"] == "failed":
+        return validacion_hora, status.HTTP_400_BAD_REQUEST
+    else:
+        hora = validacion_hora["data"]
+  
+    validacion_monedas = db.valida_monedas(moneda_from, moneda_to)
+    if validacion_monedas["status"] == "failed":
+        return validacion_monedas, status.HTTP_400_BAD_REQUEST
 
+    validacion_cantidades = db.valida_cantidad(cantidad_from, cantidad_to)
+    if validacion_cantidades["status"] == "failed":
+        return validacion_cantidades, status.HTTP_400_BAD_REQUEST
+    
     if moneda_from != "EUR":
-        try:
-            if float(cantidad_from) > valores_wallet[moneda_from]:
-                output = {"status":"failed", "error":f"No tienes suficiente saldo en {moneda_from}"}
-                return output, status.HTTP_400_BAD_REQUEST
-        except KeyError:
-            output = {"status":"failed", "error":f"No tienes suficiente saldo en {moneda_from}"}
-            return output, status.HTTP_400_BAD_REQUEST
+        validacion_saldo_suficiente = db.saldo_suficiente(cantidad_from, moneda_from)
+        if validacion_saldo_suficiente["status"] == "failed":
+            return validacion_saldo_suficiente, status.HTTP_400_BAD_REQUEST
     
+    db.comprueba_db_creada()
 
     sql = "INSERT INTO movimientos (date, time, moneda_from, cantidad_from, moneda_to, cantidad_to) VALUES (?,?,?,?,?,?)" 
     params = (
