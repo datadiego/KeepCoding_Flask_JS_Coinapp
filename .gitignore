@@ -1,7 +1,5 @@
 #Informacion personal
-settings.py
 launch.json
-requirements.dev2.txt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
