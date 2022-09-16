@@ -169,17 +169,15 @@ class DBManager:
         print(saldo_monedas)
         saldo_monedas = saldo_monedas["data"]
         print(moneda_from)
+        
         if moneda_from not in saldo_monedas:
             output = {"status":"failed", "error":f"No tienes suficientes {moneda_from}"}
             return output
         else:    
-            try:
-                if cantidad_from > saldo_monedas["data"]:
-                    output = {"status":"failed", "error":f"No tienes suficientes {moneda_from}"}
-                    return output
-            except KeyError:
-                output = {"status":"failed", "error":f"No tienes suficientes {moneda_from}"}
+            if float(cantidad_from) > saldo_monedas[moneda_from]:
+                output = {"status":"failed", "error":f"No tienes suficientes {moneda_from}b"}
                 return output
+
             output = {"status":"success"}
             return output
         

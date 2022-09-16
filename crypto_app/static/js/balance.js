@@ -1,4 +1,3 @@
-//TODO: añadir flask-API a requirements.txt
 const peticion_movimientos = new XMLHttpRequest();
 const peticion_rate = new XMLHttpRequest();
 const peticion_compra = new XMLHttpRequest();
