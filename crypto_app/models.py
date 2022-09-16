@@ -175,7 +175,7 @@ class DBManager:
             return output
         else:    
             if float(cantidad_from) > saldo_monedas[moneda_from]:
-                output = {"status":"failed", "error":f"No tienes suficientes {moneda_from}b"}
+                output = {"status":"failed", "error":f"No tienes suficientes {moneda_from}"}
                 return output
 
             output = {"status":"success"}

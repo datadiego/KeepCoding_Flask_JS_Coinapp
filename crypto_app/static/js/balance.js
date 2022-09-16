@@ -150,9 +150,15 @@ function obtenerConversion() {
   peticion_rate.send();
   if(peticion_rate.status === 400){
     document.getElementById("mensajes-error").innerHTML = "ERROR: No se puede realizar la conversion, comprueba tu APIKEY";
+    const respuesta = JSON.parse(peticion_rate.responseText);
+    const datos = respuesta.data;
+    const estado_peticion = respuesta.status;
+    if (estado_peticion === "failed"){
+      document.getElementById("mensajes-error").innerHTML = "ERROR: "+respuesta.error;
+    }
   }
   if(peticion_rate.status === 404){
-    document.getElementById("mensajes-error").innerHTML = "ERROR: No se puede realizar la conversion, hubo un error en la peticion";
+    document.getElementById("mensajes-error").innerHTML = "ERROR: No se puede realizar la conversion, comprueba los datos del formulario";
   }
   if (peticion_rate.readyState === 4 && peticion_rate.status === 200) {
     const respuesta = JSON.parse(peticion_rate.responseText);
@@ -163,7 +169,7 @@ function obtenerConversion() {
     }
     if (estado_peticion === "success"){
       const rate = datos.tipo_cambio.toLocaleString('es-ES', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-    document.getElementById("conversion").value = datos.tipo_cambio.toFixed(2);
+      document.getElementById("conversion").value = datos.tipo_cambio.toFixed(2);
     }
   }
 }
