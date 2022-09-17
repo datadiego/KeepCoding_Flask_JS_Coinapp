@@ -1,3 +1,3 @@
-APIKEY = "Añade aqui tu APIKEY de coinapi.io"
+APIKEY = "0814B595-B3D4-4B26-8EE0-4B873626D889"
 RUTA_DB = "db/movimientos.db"
 MONEDAS = ['EUR', 'USD', 'BTC', 'XTZ', 'DOGE', 'ETH']
