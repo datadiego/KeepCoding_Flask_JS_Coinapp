@@ -63,14 +63,11 @@ flask run
 
 Si prefieres realizar esta configuración de manera manual:
 
-- Localiza el archivo `env_template`, edítalo para que quede así:
-
+- Localiza el archivo `env_template`, cambia su nombre a `.env` y cambia el valor de `FLASK_ENV` a development o production:
 ```
 FLASK_APP=app.py
 FLASK_ENV=development
 ```
-- Renombra `env_template` a .`env`
-
 - Localiza el archivo `settings.py`, pega tu *APIKEY* en la variable correspondiente:
 ```
 APIKEY = "Añade aqui tu APIKEY de coinapi.io"
@@ -81,3 +78,9 @@ MONEDAS = ['EUR', 'USD', 'BTC', 'XTZ', 'DOGE', 'ETH'] #Añade otras monedas aqui
 ```
 flask run
 ```
+# Librerías:
+El proyecto ha sido desarrollado usando las siguientes librerías de Python:
+- Flask
+- API-Flask
+- requests
+- dotenv
