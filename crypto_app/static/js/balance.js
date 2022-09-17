@@ -110,20 +110,34 @@ function formatDate(date) {
   const day = dateElements[0];
   const month = dateElements[1];
   const year = dateElements[2];
+  // const monthNames = [
+  //   "Enero",
+  //   "Febrero",
+  //   "Marzo",
+  //   "Abril",
+  //   "Mayo",
+  //   "Junio",
+  //   "Julio",
+  //   "Agosto",
+  //   "Septiembre",
+  //   "Octubre",
+  //   "Noviembre",
+  //   "Diciembre"
+  // ];
   const monthNames = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre"
-  ];
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ]
   return day + " " + monthNames[month - 1] + " " + year;
 }
 
