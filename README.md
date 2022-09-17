@@ -1,7 +1,7 @@
-# KeepCoding_Flask_JS_Coinapp
-Proyecto realizado durante el fin de la edicion XI del bootcamp cero en keepcoding.io
-Esta aplicacion web te permite consultar el precio de varias criptomonedas a coinapi.io y almacenar movimientos entre monedas para consultar inversiones.
-[imagen]
+# Wallet Web App
+Proyecto Flask+Vanilla JS realizado durante el fin de la edicion XI del bootcamp cero en keepcoding.io
+La aplicación consiste en una parte de backend con una API que permite consultar el precio de varias criptomonedas a coinapi.io y almacenar movimientos entre monedas en una base de datos y otra de frontend en la que se muestran los movimientos y estado de la inversión del usuario utilizando JavaScript.
+![Imagen de la aplicación funcionando](/app_screenshot.png)
 
 ## Características:
 - Script para configurar la aplicación, ejecutalo y sigue sus instrucciones para lanzar tu aplicación de flask mas rápido
@@ -52,6 +52,7 @@ pip install -r requierements.dev.txt
 Antes de iniciar la aplicación, debemos configurarla:
 - Si no tienes aun una *APIKEY* de [coinapi.io](http://coinapi.io), regístrate y copia tu *APIKEY*.
 
+## Configurar mediante `instalador.py` 
 - Puedes configurar la aplicación ejecutando y siguiendo las instrucciones del instalador:
 ```
 python instalador.py
@@ -60,7 +61,7 @@ python instalador.py
 ```
 flask run
 ```
-
+## Configuración manual
 Si prefieres realizar esta configuración de manera manual:
 
 - Localiza el archivo `env_template`, cambia su nombre a `.env` y cambia el valor de `FLASK_ENV` a development o production:
