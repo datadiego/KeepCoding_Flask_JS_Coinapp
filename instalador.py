@@ -1,5 +1,5 @@
 import requests
-
+import os
 def peticion(text):
     resultado = ""
     while resultado == "":
@@ -49,6 +49,9 @@ with open(file_name, "w") as file:
     file.write("MONEDAS = " + "['EUR', 'USD', 'BTC', 'XTZ', 'DOGE', 'ETH']")
 print("Archivo de configuración creado")
 print("Creando base de datos...")
+existe_ruta = os.path.exists("./db")
+if existe_ruta == False:
+    os.mkdir("./db")
 import sqlite3
 conexion = sqlite3.connect("db/movimientos.db")
 cursor = conexion.cursor()
